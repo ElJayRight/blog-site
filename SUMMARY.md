@@ -1,3 +1,3 @@
 # Summary
 * Research
-    * [Making Linux Kerberos Ticket Not Bad](Research/Linux_kerb_tickets)
+    * [Making Linux Kerberos Ticket Not Bad](Research/Linux_kerb_tickets.md)
