@@ -1,0 +1,13 @@
+input: .
+output: .retype
+url: eljayright.github.io
+branding:
+  title: ElJayRight
+  label: dev-notes
+links:
+- text: Github
+  link: https://github.com/eljayright
+  icon: mark-github
+  target: blank
+footer:
+  copyright: "&copy; Copyright {{ year }}. ElJay All rights reserved."
