@@ -2,8 +2,7 @@
 icon: info
 ---
 # About
-Junior Red Teamer
-
+Junior Red Teamer.
 Passionate about Windows exploitation.
 
 Interested in:
