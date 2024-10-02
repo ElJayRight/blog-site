@@ -1,7 +1,7 @@
-![](images/hybrid.png)]
-
-
 # Hybrid
+![](images/hybrid.png)
+
+
 IPs: `10.10.215.165` `10.10.215.166`
 
 # Recon
