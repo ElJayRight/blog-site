@@ -1,5 +1,9 @@
 ![](images/hybrid.png)]
+
+
+# Hybrid
 IPs: `10.10.215.165` `10.10.215.166`
+
 # Recon
 Nmap:
 10.10.215.166 mail01.hybrid.vl
