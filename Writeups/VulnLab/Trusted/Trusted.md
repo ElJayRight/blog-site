@@ -1,5 +1,5 @@
 # Trusted
-![[images/trusted.png]]
+![](images/trusted.png)
 
 
 IPs: `10.10.217.117` `10.10.217.118`
