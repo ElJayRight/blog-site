@@ -1,5 +1,5 @@
 # Heron
-![](heron.png)
+![](images/heron.png)
 
 
 IPs: `10.10.172.101` `10.10.172.102`
