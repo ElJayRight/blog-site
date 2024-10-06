@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.781516005914">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.6.0.781516169348">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.6.0">
@@ -32,11 +32,11 @@
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="../../../resources/css/retype.css?v=3.6.0.781516005914" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.781516169348" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.781516005914" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.781516169348" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.781516005914" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.781516169348" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -453,7 +453,7 @@ mucdc</code></pre>
 <p>Very fun chain, really liked how you didnt really need to rely on any fancy AD tricks till the end. I wanted to try to backdoor the web.config file without having to override the current configuration of the webapp but couldnt find a way.</p>
 <p>When looking at the way others solved the box the <code v-pre>ssh.ps1</code> file was unintended. The correct way was to use the <code v-pre>.krb5login</code> and to backdoor ssh to get the login password. You could also have used the aduit group that svc-web-accounting is in to set up rbcd on the jumpbox, which would have given root.</p>
 <p>Someone also mentioned you can hijack the dll in the <code v-pre>accounting$</code> share and gain a shell that way.</p>
-<p>As there is a bunch of stuff to try I&#x27;m going to leave it for now and post another write up later on going over this.</p>
+<p>As there is a bunch of stuff to try I&#x27;m going to leave it for now and post another writeup going over this with a focus on DLL Proxying.</p>
 
                                 
                                 <!-- Required only on API pages -->
