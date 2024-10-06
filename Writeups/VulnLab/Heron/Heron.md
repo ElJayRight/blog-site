@@ -297,4 +297,4 @@ When looking at the way others solved the box the `ssh.ps1` file was unintended.
 
 Someone also mentioned you can hijack the dll in the `accounting$` share and gain a shell that way.
 
-As there is a bunch of stuff to try I'm going to leave it for now and post another write up later on going over this.
+As there is a bunch of stuff to try I'm going to leave it for now and post another writeup going over this with a focus on DLL Proxying.
