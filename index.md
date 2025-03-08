@@ -2,7 +2,7 @@
 icon: info
 ---
 # About
-Junior Red Teamer.
+Red Teamer.
 Passionate about Windows binary exploitation.
 
 Interested in:
@@ -12,6 +12,6 @@ Interested in:
 
 Currently looking at:
  - Windows Userland Binary Exploitation
- - "Fixing" Impackets kerberos flow
+ - Abusing DFIR tooling to get around mitigations
 
 More stuff coming soon :D
