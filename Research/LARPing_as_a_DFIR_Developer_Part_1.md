@@ -189,7 +189,7 @@ file_dataRun->offsetfieldbytes: 4
 622592 sectors starting at cluster id: 23403438
 ```
 
-All that is left to do is write the file to disk. (full code on github: LINK).
+All that is left to do is write the file to disk. (full code on github: https://github.com/ElJayRight/dumping_disk_poc).
 There is a risk of the swap file being updated after you have read the sectors but I couldnt find a way to get around this as it seems to be a race condition by design. All the forensics tools I could find that do this just say to dump the swap file right after a memory dump.
 
 My only advice would be to allocate all the space you need on the heap with VirtualAlloc before you dump ram and make sure the ram dumping tool isnt not over allocating memory when writing to a disk.
