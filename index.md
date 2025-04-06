@@ -2,7 +2,7 @@
 icon: info
 ---
 # About
-Red Teamer.
+Red Teamer | Vuln Researcher
 Passionate about Windows binary exploitation.
 
 Interested in:
@@ -14,4 +14,3 @@ Currently looking at:
  - Windows Userland Binary Exploitation
  - Abusing DFIR tooling to get around mitigations
 
-More stuff coming soon :D
