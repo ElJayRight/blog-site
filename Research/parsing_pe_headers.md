@@ -246,6 +246,8 @@ SHA256          72C26E96CF9A147B8F460FAF7803F1787B5A81FF6634AEC1252556C585ACA161
 
 TaDa!
 
+Full code: https://github.com/ElJayRight/code_from_blog_posts/tree/main/parse_pe_headers
+
 ## Closing Thoughts
 While this will work for most files, it wont be able to handle a PE32 or if the pdb is the old PDB2.0 format. I'll fix these issues if they ever come up while using the tool. With the end goal of using this as a BOF i didnt really see any need to update the code to have the ability to download the pdb file. (tbh i havent fleshed out the full project yet lol).
 
@@ -253,6 +255,9 @@ Next post I'll look at what a pdb file is and how do i parse one on linux.
 
 ## References
 https://stackoverflow.com/questions/3899573/what-is-a-pdb-file
+
 https://www.debuginfo.com/articles/debuginfomatch.html
+
 https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#debug-type
+
 https://stackoverflow.com/questions/3092609/how-to-get-field-names-and-offsets-of-a-struct-using-dbghlp-and-pdb
