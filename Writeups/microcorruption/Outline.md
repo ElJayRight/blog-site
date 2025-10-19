@@ -1,0 +1,18 @@
+## What Are These?
+Writeups (in the loosest term possible) for the microcorruption challenges. (https://microcorruption.com/)
+
+The first few levels are pretty easy so instead of a writeup I wrote down the way I approached each challenge. For the later ones I'm planning on doing full CTF style writeup.
+
+## Solutions
+
+[[1. New Orleans|New Orleans]]
+[[2. Sydney|Sydney]]
+[[3. Hanoi|Hanoi]]
+[[4. Cusco|Cusco]]
+[[5. Reykjavik|Reykjavik]]
+[[6. Whitehorse|Whitehorse]]
+[[7. Montevideo|Montevideo]]
+[[8. Johannesburg|Johannesburg]]
+[[9. Santa Cruz|Santa Cruz]]
+[[10. Jakarta|Jakarta]]
+
